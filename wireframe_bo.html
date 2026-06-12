@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ECMS — Back Office Wireframe v3</title>
+<title>ECMS — Back Office Wireframe</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.41.0/apexcharts.min.js"></script>
 <style>
   :root {
@@ -154,8 +154,8 @@
   .activity-text span{font-size:11px;color:var(--gray-400)}
 
   /* TABS */
-  .tabs{display:flex;border-bottom:2px solid var(--gray-200);margin-bottom:18px;overflow-x:auto}
-  .tab{padding:9px 16px;font-size:12px;font-weight:600;color:var(--gray-500);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s;white-space:nowrap}
+  .tabs{display:flex;border-bottom:2px solid var(--gray-200);margin-bottom:18px}
+  .tab{padding:9px 16px;font-size:12px;font-weight:600;color:var(--gray-500);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s}
   .tab.active{color:var(--navy);border-bottom-color:var(--navy)}
 
   /* REPORT CONTROLS */
@@ -218,19 +218,19 @@
 <div id="page-login">
   <div class="login-left">
     <div class="login-logo"><span>KMP</span></div>
-    <h1>ECMS Back Office v3</h1>
+    <h1>ECMS Back Office</h1>
     <p>Sistem Manajemen Internal<br>KMP Bali Bangkit Sejahtera</p>
     <div class="login-features">
       <div class="login-feature"><span>📁</span><p>Manajemen Dokumen Digital — MOU, Akta, Kontrak, SOP</p></div>
-      <div class="login-feature"><span>💰</span><p>Akuntansi Dasar & Pencatatan Keuangan per Unit Usaha</p></div>
-      <div class="login-feature"><span>📊</span><p>COA, Laporan Laba Rugi, Neraca & Grafik Analisis</p></div>
+      <div class="login-feature"><span>💰</span><p>Pencatatan Keuangan & Cashflow Koperasi</p></div>
+      <div class="login-feature"><span>📊</span><p>Reporting, Grafik & Laporan Otomatis</p></div>
       <div class="login-feature"><span>🔐</span><p>6 Level Hak Akses — Multi-Role RBAC</p></div>
     </div>
   </div>
   <div class="login-right">
     <div class="login-form">
       <h2>Selamat Datang</h2>
-      <p class="subtitle">Masuk ke Back Office KMP BBS v3</p>
+      <p class="subtitle">Masuk ke Back Office KMP BBS</p>
       <div class="form-group"><label>Email / Username</label><input type="email" value="admin@kmpbbs.id"></div>
       <div class="form-group"><label>Password</label><input type="password" value="••••••••"></div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
@@ -238,7 +238,7 @@
         <a href="#" style="font-size:12px;color:var(--blue);text-decoration:none">Lupa password?</a>
       </div>
       <button class="btn-login" onclick="startApp()">Masuk ke Sistem →</button>
-      <p class="login-footer">ECMS v3.0 — KMP Bali Bangkit Sejahtera © 2026</p>
+      <p class="login-footer">ECMS v1.0 — KMP Bali Bangkit Sejahtera © 2026</p>
     </div>
   </div>
 </div>
@@ -250,7 +250,7 @@
     <div class="sidebar-logo">
       <div class="logo-box">
         <div class="logo-icon">KMP</div>
-        <div class="logo-text"><h3>ECMS</h3><p>v3.0</p></div>
+        <div class="logo-text"><h3>ECMS</h3><p>Back Office</p></div>
       </div>
     </div>
     <div class="sidebar-nav">
@@ -322,13 +322,100 @@
             </div>
           </div>
         </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="card">
+            <div class="card-title"><span>📁</span>Dokumen Akan Expired</div>
+            <table><thead><tr><th>Dokumen</th><th>Kategori</th><th>Sisa</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Kontrak Sewa Kantor</td><td><span class="badge b-orange">Kontrak</span></td><td style="color:var(--red);font-weight:600">14 hari</td><td><span class="badge b-red">Kritis</span></td></tr>
+              <tr><td>MOU Supplier Alat Tulis</td><td><span class="badge b-blue">MOU</span></td><td>22 hari</td><td><span class="badge b-orange">Perhatian</span></td></tr>
+              <tr><td>Izin Operasional Divisi</td><td><span class="badge b-gray">SK</span></td><td>28 hari</td><td><span class="badge b-orange">Perhatian</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="card">
+            <div class="card-title"><span>✅</span>Transaksi Pending Approval</div>
+            <table><thead><tr><th>Keterangan</th><th>Jumlah</th><th>Aksi</th></tr></thead>
+            <tbody>
+              <tr><td>Pembelian Peralatan Kantor</td><td style="color:var(--red);font-weight:600">-Rp 8,5 jt</td><td><button class="btn btn-navy btn-sm">Approve</button></td></tr>
+              <tr><td>Biaya Event Koperasi</td><td style="color:var(--red);font-weight:600">-Rp 3,2 jt</td><td><button class="btn btn-navy btn-sm">Approve</button></td></tr>
+              <tr><td>Bayar Listrik Kantor</td><td style="color:var(--red);font-weight:600">-Rp 1,2 jt</td><td><button class="btn btn-navy btn-sm">Approve</button></td></tr>
+            </tbody></table>
+          </div>
+        </div>
       </div>
 
-      <!-- TRANSAKSI INPUT (UPDATED: Tambah Unit Usaha per SOW v3) -->
+      <!-- DOKUMEN LIST -->
+      <div id="pg-dok-list" class="page">
+        <div class="filter-bar">
+          <div class="search-input"><span>🔍</span><input placeholder="Cari dokumen..."></div>
+          <select class="filter-select"><option>Semua Kategori</option><option>MOU</option><option>Akta</option><option>Kontrak</option><option>SK</option><option>Sertifikat</option><option>Legalitas</option><option>SOP</option></select>
+          <select class="filter-select"><option>Semua Status</option><option>Aktif</option><option>Akan Expired</option><option>Expired</option></select>
+          <button class="btn btn-navy" onclick="showModal('m-upload')">+ Upload Dokumen</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table><thead><tr><th>Nama Dokumen</th><th>Kategori</th><th>Tgl Upload</th><th>Expired</th><th>Diupload</th><th>Akses</th><th>Status</th><th>Aksi</th></tr></thead>
+            <tbody>
+              <tr><td><div style="display:flex;align-items:center;gap:7px"><span>📄</span><div><p style="font-weight:600;font-size:12px">Akta Pendirian KMP BBS</p><p style="font-size:11px;color:var(--gray-400)">akta_pendirian.pdf · 2.4MB</p></div></div></td><td><span class="badge b-blue">Akta</span></td><td>12 Jan 2026</td><td style="color:var(--green);font-weight:600">31 Des 2030</td><td>Super Admin</td><td><span class="badge b-gray">Terbatas</span></td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon" title="Lihat">👁️</button><button class="btn btn-outline btn-sm btn-icon" title="Download">⬇️</button><button class="btn btn-outline btn-sm btn-icon" title="Edit">✏️</button></div></td></tr>
+            </tbody></table>
+          </div>
+          <div class="pagination"><span>Menampilkan 1-5 dari 47 dokumen</span><div class="page-btns"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">›</button></div></div>
+        </div>
+      </div>
+
+      <!-- DOKUMEN UPLOAD -->
+      <div id="pg-dok-upload" class="page">
+        <div class="card" style="max-width:660px">
+          <div class="form-grid">
+            <div class="form-field form-full"><label>Upload File *</label><div class="upload-zone"><div style="font-size:32px">📁</div><p><strong>Klik untuk pilih file</strong> atau drag & drop</p><p style="font-size:11px;margin-top:3px">PDF, Word, Excel, JPG, PNG — Maks 50MB</p></div></div>
+            <div class="form-field form-full"><label>Judul / Nama Dokumen *</label><input type="text" placeholder="Contoh: MOU Kerjasama PT Sinar Bali 2026"></div>
+            <div class="form-field"><label>Kategori *</label><select><option>-- Pilih --</option><option>MOU</option><option>Akta</option><option>Kontrak</option><option>SK</option><option>Sertifikat</option><option>Legalitas</option><option>SOP</option><option>Lainnya</option></select></div>
+            <div class="form-field"><label>Nomor Dokumen</label><input type="text" placeholder="Contoh: MOU/2026/001"></div>
+            <div class="form-field"><label>Tanggal Berlaku</label><input type="date" value="2026-06-10"></div>
+            <div class="form-field"><label>Tanggal Expired</label><input type="date" value="2027-06-10"></div>
+            <div class="form-field form-full"><label>Pihak yang Terlibat</label><input type="text" placeholder="Contoh: PT Sinar Bali Sejahtera, KMP BBS"></div>
+            <div class="form-field form-full"><label>Deskripsi</label><textarea placeholder="Deskripsi singkat tentang dokumen ini..."></textarea></div>
+            <div class="form-field"><label>Tags</label><input type="text" placeholder="kerjasama, supplier, 2026"></div>
+            <div class="form-field"><label>Hak Akses</label><select><option>Semua Pengurus</option><option>Role Tertentu</option><option>User Tertentu</option></select></div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:18px">
+            <button class="btn btn-outline" onclick="go('dok-list')">Batal</button>
+            <button class="btn btn-navy" onclick="go('dok-list')">⬆️ Upload Dokumen</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRANSAKSI LIST -->
+      <div id="pg-trx-list" class="page">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px">
+          <div class="stat-card"><div class="stat-icon green">⬆️</div><div class="stat-info"><p>Rp 24,5 jt</p><span>Total Masuk (Juni)</span><div class="stat-badge up">+12%</div></div></div>
+          <div class="stat-card"><div class="stat-icon red">⬇️</div><div class="stat-info"><p>Rp 18,2 jt</p><span>Total Keluar (Juni)</span><div class="stat-badge down">+8%</div></div></div>
+          <div class="stat-card"><div class="stat-icon blue">💰</div><div class="stat-info"><p>Rp 48,5 jt</p><span>Saldo Saat Ini</span><div class="stat-badge up">Sehat</div></div></div>
+        </div>
+        <div class="filter-bar">
+          <div class="search-input"><span>🔍</span><input placeholder="Cari transaksi..."></div>
+          <select class="filter-select"><option>Semua Jenis</option><option>Pemasukan</option><option>Pengeluaran</option></select>
+          <select class="filter-select"><option>Semua Kategori</option><option>Operasional</option><option>Gaji</option><option>Proyek</option></select>
+          <input type="date" class="filter-select" value="2026-06-01">
+          <input type="date" class="filter-select" value="2026-06-30">
+          <button class="btn btn-navy" onclick="go('trx-input')">+ Input Transaksi</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Jenis</th><th>Jumlah</th><th>Saldo</th><th>Status</th><th>Aksi</th></tr></thead>
+            <tbody>
+              <tr><td>10 Jun 2026</td><td>Iuran Bulanan Anggota</td><td><span class="badge b-blue">Operasional</span></td><td><span class="badge b-green">Masuk</span></td><td style="color:var(--green);font-weight:700">+Rp 5 jt</td><td>Rp 48,5 jt</td><td><span class="badge b-green">Approved</span></td><td><button class="btn btn-outline btn-sm">Detail</button></td></tr>
+            </tbody></table>
+          </div>
+          <div class="pagination"><span>Menampilkan 1-5 dari 48 transaksi</span><div class="page-btns"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">›</button></div></div>
+        </div>
+      </div>
+
+      <!-- TRANSAKSI INPUT (UPDATED: Tambah Unit Usaha) -->
       <div id="pg-trx-input" class="page">
         <div class="card" style="max-width:580px">
           <div class="form-grid">
-            <div class="form-field form-full"><label>Unit Usaha * <span style="color:var(--blue);font-size:10px;font-weight:700">(NEW - SOW v3)</span></label><select required><option>-- Pilih Unit Usaha --</option><option>Unit Pertanian</option><option>Unit Perdagangan</option><option>Unit Jasa</option><option>Pusat</option></select></div>
+            <div class="form-field form-full"><label>Unit Usaha * <span style="color:var(--blue);font-size:10px;font-weight:700">(NEW)</span></label><select required><option>-- Pilih Unit Usaha --</option><option>Unit Pertanian</option><option>Unit Perdagangan</option><option>Unit Jasa</option><option>Pusat</option></select></div>
             <div class="form-field form-full"><label>Jenis Transaksi *</label>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
                 <label style="display:flex;align-items:center;gap:7px;padding:9px 11px;border:2px solid var(--green);border-radius:var(--radius);background:var(--green-light);cursor:pointer;font-size:12px;font-weight:600;color:var(--green)"><input type="radio" name="jenis" checked> ⬆️ Pemasukan</label>
@@ -350,7 +437,7 @@
         </div>
       </div>
 
-      <!-- LAPORAN CHART OF ACCOUNTS (NEW - D7 - SOW v3) -->
+      <!-- LAPORAN CHART OF ACCOUNTS (NEW) -->
       <div id="pg-lap-coa" class="page">
         <div class="report-controls">
           <div class="search-input"><span>🔍</span><input placeholder="Cari kode akun..."></div>
@@ -361,27 +448,20 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-title"><span>📋</span>Chart of Accounts (COA) <span style="color:var(--blue);font-size:10px;font-weight:700">(NEW - D7 - SOW v3)</span></div>
+          <div class="card-title"><span>📋</span>Chart of Accounts (COA) <span style="color:var(--blue);font-size:10px;font-weight:700">(NEW)</span></div>
           <div class="table-wrap">
             <table><thead><tr><th>Kode Akun</th><th>Nama Akun</th><th>Tipe</th><th>Saldo Awal</th><th>Saldo Akhir</th><th>Status</th><th>Aksi</th></tr></thead>
             <tbody>
               <tr><td><span style="font-weight:700">1000</span></td><td>Kas & Bank</td><td><span class="badge b-blue">Aset</span></td><td>Rp 5.000.000</td><td>Rp 48.500.000</td><td><span class="badge b-green">Aktif</span></td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
-              <tr><td><span style="font-weight:700">1100</span></td><td>Piutang Anggota</td><td><span class="badge b-blue">Aset</span></td><td>Rp 10.000.000</td><td>Rp 8.500.000</td><td><span class="badge b-green">Aktif</span></td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
-              <tr><td><span style="font-weight:700">2000</span></td><td>Utang Bank</td><td><span class="badge b-orange">Liabilitas</span></td><td>Rp 20.000.000</td><td>Rp 15.000.000</td><td><span class="badge b-green">Aktif</span></td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
-              <tr><td><span style="font-weight:700">3000</span></td><td>Modal Awal</td><td><span class="badge b-gray">Modal</span></td><td>Rp 50.000.000</td><td>Rp 50.000.000</td><td><span class="badge b-green">Aktif</span></td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
               <tr><td><span style="font-weight:700">4000</span></td><td>Iuran Anggota</td><td><span class="badge b-green">Pendapatan</span></td><td>—</td><td>Rp 60.000.000</td><td><span class="badge b-green">Aktif</span></td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
-              <tr><td><span style="font-weight:700">5000</span></td><td>Beban Operasional</td><td><span class="badge b-red">Beban</span></td><td>—</td><td>-Rp 8.500.000</td><td><span class="badge b-green">Aktif</span></td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
             </tbody></table>
           </div>
         </div>
       </div>
 
-      <!-- LAPORAN LABA RUGI (NEW - D8 - SOW v3) -->
+      <!-- LAPORAN LABA RUGI (NEW) -->
       <div id="pg-lap-labaru" class="page">
         <div class="report-controls">
-          <div class="period-btns">
-            <button class="period-btn">Jan</button><button class="period-btn">Feb</button><button class="period-btn">Mar</button><button class="period-btn">Apr</button><button class="period-btn">Mei</button><button class="period-btn active">Jun</button>
-          </div>
           <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit Perdagangan</option><option>Unit Jasa</option></select>
           <select class="filter-select"><option>2026</option><option>2025</option></select>
           <div style="margin-left:auto;display:flex;gap:7px">
@@ -390,28 +470,20 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-title"><span>📊</span>Laporan Laba Rugi Juni 2026 <span style="color:var(--blue);font-size:10px;font-weight:700">(NEW - D8 - SOW v3)</span></div>
+          <div class="card-title"><span>📊</span>Laporan Laba Rugi <span style="color:var(--blue);font-size:10px;font-weight:700">(NEW)</span></div>
           <div class="table-wrap">
-            <table><thead><tr><th style="text-align:left">Keterangan</th><th style="text-align:right">Jumlah</th><th style="text-align:right">% dari Penjualan</th></tr></thead>
+            <table><thead><tr><th style="text-align:left">Keterangan</th><th style="text-align:right">Jumlah</th><th style="text-align:right">%</th></tr></thead>
             <tbody>
               <tr style="background:var(--blue-xlight);font-weight:700"><td>PENDAPATAN</td><td style="text-align:right">Rp 60.000.000</td><td style="text-align:right">100%</td></tr>
               <tr><td style="padding-left:28px">Iuran Anggota</td><td style="text-align:right">Rp 30.000.000</td><td style="text-align:right">50%</td></tr>
-              <tr><td style="padding-left:28px">Hasil Usaha Divisi</td><td style="text-align:right">Rp 30.000.000</td><td style="text-align:right">50%</td></tr>
-              <tr style="background:var(--orange-light);font-weight:700"><td>BEBAN OPERASIONAL</td><td style="text-align:right;color:var(--red)">-Rp 8.500.000</td><td style="text-align:right;color:var(--red)">14%</td></tr>
-              <tr><td style="padding-left:28px">Gaji Karyawan</td><td style="text-align:right;color:var(--red)">-Rp 5.000.000</td><td style="text-align:right;color:var(--red)">8%</td></tr>
-              <tr><td style="padding-left:28px">Biaya Umum</td><td style="text-align:right;color:var(--red)">-Rp 3.500.000</td><td style="text-align:right;color:var(--red)">6%</td></tr>
-              <tr style="background:var(--green-light);font-weight:700"><td>LABA BERSIH</td><td style="text-align:right">Rp 51.500.000</td><td style="text-align:right">86%</td></tr>
             </tbody></table>
           </div>
         </div>
       </div>
 
-      <!-- LAPORAN NERACA DASAR (NEW - D9 - SOW v3) -->
+      <!-- LAPORAN NERACA (NEW) -->
       <div id="pg-lap-neraca" class="page">
         <div class="report-controls">
-          <div class="period-btns">
-            <button class="period-btn">Mar</button><button class="period-btn">Jun</button><button class="period-btn active">Terkini</button>
-          </div>
           <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit Perdagangan</option><option>Unit Jasa</option></select>
           <div style="margin-left:auto;display:flex;gap:7px">
             <button class="btn btn-outline btn-sm">📊 Excel</button>
@@ -419,34 +491,17 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-title"><span>📑</span>Laporan Neraca Dasar (Per 10 Juni 2026) <span style="color:var(--blue);font-size:10px;font-weight:700">(NEW - D9 - SOW v3)</span></div>
+          <div class="card-title"><span>📑</span>Laporan Neraca <span style="color:var(--blue);font-size:10px;font-weight:700">(NEW)</span></div>
           <div class="table-wrap">
             <table><thead><tr><th style="text-align:left">ASET</th><th style="text-align:right">Jumlah</th></tr></thead>
             <tbody>
-              <tr style="font-weight:700"><td>ASET LANCAR</td><td style="text-align:right"></td></tr>
               <tr><td style="padding-left:28px">Kas & Bank</td><td style="text-align:right">Rp 48.500.000</td></tr>
-              <tr><td style="padding-left:28px">Piutang Anggota</td><td style="text-align:right">Rp 8.500.000</td></tr>
-              <tr style="background:var(--gray-50);font-weight:700"><td>TOTAL ASET LANCAR</td><td style="text-align:right">Rp 57.000.000</td></tr>
-              <tr style="font-weight:700"><td>ASET TETAP</td><td style="text-align:right"></td></tr>
-              <tr><td style="padding-left:28px">Peralatan & Perlengkapan</td><td style="text-align:right">Rp 15.000.000</td></tr>
-              <tr style="background:var(--blue-light);font-weight:700"><td>TOTAL ASET</td><td style="text-align:right">Rp 72.000.000</td></tr>
-            </tbody></table>
-            <table style="margin-top:14px"><thead><tr><th style="text-align:left">LIABILITAS & MODAL</th><th style="text-align:right">Jumlah</th></tr></thead>
-            <tbody>
-              <tr style="font-weight:700"><td>LIABILITAS</td><td style="text-align:right"></td></tr>
-              <tr><td style="padding-left:28px">Utang Bank</td><td style="text-align:right">Rp 15.000.000</td></tr>
-              <tr style="background:var(--gray-50);font-weight:700"><td>TOTAL LIABILITAS</td><td style="text-align:right">Rp 15.000.000</td></tr>
-              <tr style="font-weight:700"><td>MODAL</td><td style="text-align:right"></td></tr>
-              <tr><td style="padding-left:28px">Modal Awal</td><td style="text-align:right">Rp 50.000.000</td></tr>
-              <tr><td style="padding-left:28px">Laba Tahun Berjalan</td><td style="text-align:right">Rp 7.000.000</td></tr>
-              <tr style="background:var(--gray-50);font-weight:700"><td>TOTAL MODAL</td><td style="text-align:right">Rp 57.000.000</td></tr>
-              <tr style="background:var(--blue-light);font-weight:700"><td>TOTAL LIABILITAS & MODAL</td><td style="text-align:right">Rp 72.000.000</td></tr>
             </tbody></table>
           </div>
         </div>
       </div>
 
-      <!-- PENGATURAN (UPDATED: Tambah tab Unit Usaha per SOW v3) -->
+      <!-- PENGATURAN (UPDATED: Tambah tab Unit Usaha) -->
       <div id="pg-pengaturan" class="page">
         <div class="tabs">
           <div class="tab active">🏢 Profil Koperasi</div>
@@ -455,33 +510,23 @@
           <div class="tab">🔔 Notifikasi</div>
           <div class="tab">💾 Backup</div>
         </div>
-        <!-- Tab 1: Profil Koperasi -->
-        <div class="card" style="max-width:580px">
+        <!-- Tab 1 -->
+        <div class="card">
           <div class="form-grid">
             <div class="form-field form-full"><label>Nama Koperasi *</label><input type="text" value="Koperasi Jasa Multi Pihak Bali Bangkit Sejahtera"></div>
-            <div class="form-field"><label>Singkatan</label><input type="text" value="KMP BBS"></div>
             <div class="form-field"><label>Email</label><input type="email" value="info@kmpbbs.id"></div>
-            <div class="form-field"><label>Threshold Approval (Rp)</label><input type="number" value="5000000"></div>
-          </div>
-          <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:18px">
-            <button class="btn btn-outline">Reset</button>
-            <button class="btn btn-navy">💾 Simpan</button>
           </div>
         </div>
-
-        <!-- Tab 2: Unit Usaha (NEW - SOW v3) -->
-        <div class="card" style="display:none;max-width:100%">
+        <!-- Tab 2: Unit Usaha -->
+        <div class="card" style="display:none">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-            <div class="card-title"><span>🏭</span>Manajemen Unit Usaha <span style="color:var(--blue);font-size:10px;font-weight:700">(NEW - SOW v3)</span></div>
+            <div class="card-title"><span>🏭</span>Manajemen Unit Usaha <span style="color:var(--blue);font-size:10px;font-weight:700">(NEW)</span></div>
             <button class="btn btn-navy btn-sm">+ Tambah Unit Usaha</button>
           </div>
           <div class="table-wrap">
             <table><thead><tr><th>Kode Unit</th><th>Nama Unit Usaha</th><th>Deskripsi</th><th>Status</th><th>Saldo</th><th>Aksi</th></tr></thead>
             <tbody>
-              <tr><td><span style="font-weight:700;background:var(--blue-xlight);padding:3px 6px;border-radius:4px">U001</span></td><td>Unit Pertanian</td><td>Pertanian organik & pangan lokal</td><td><span class="badge b-green">Aktif</span></td><td style="text-align:right;font-weight:600">Rp 18.500.000</td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
-              <tr><td><span style="font-weight:700;background:var(--orange-light);padding:3px 6px;border-radius:4px">U002</span></td><td>Unit Perdagangan</td><td>Perdagangan barang & distribusi</td><td><span class="badge b-green">Aktif</span></td><td style="text-align:right;font-weight:600">Rp 15.000.000</td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
-              <tr><td><span style="font-weight:700;background:var(--green-light);padding:3px 6px;border-radius:4px">U003</span></td><td>Unit Jasa</td><td>Jasa keuangan & konsultasi</td><td><span class="badge b-green">Aktif</span></td><td style="text-align:right;font-weight:600">Rp 12.000.000</td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
-              <tr><td><span style="font-weight:700;background:var(--gray-100);padding:3px 6px;border-radius:4px">U000</span></td><td>Pusat (Kantor Induk)</td><td>Administrasi & manajemen pusat</td><td><span class="badge b-green">Aktif</span></td><td style="text-align:right;font-weight:600">Rp 3.000.000</td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
+              <tr><td><span style="font-weight:700">U001</span></td><td>Unit Pertanian</td><td>Pertanian organik</td><td><span class="badge b-green">Aktif</span></td><td style="text-align:right">Rp 18.500.000</td><td><button class="btn btn-outline btn-sm btn-icon">✏️</button></td></tr>
             </tbody></table>
           </div>
         </div>
@@ -496,8 +541,7 @@
   <div class="notif-header"><h4>🔔 Notifikasi</h4><button onclick="toggleNotif()" style="background:none;border:none;cursor:pointer;color:var(--gray-400)">✕</button></div>
   <div class="notif-list">
     <div class="notif-item"><div class="dot" style="background:var(--red)"></div><div><p>Kontrak Sewa Kantor expired 14 hari lagi</p><span>1 jam lalu</span></div></div>
-    <div class="notif-item"><div class="dot" style="background:var(--orange)"></div><div><p>3 transaksi menunggu approval</p><span>2 jam lalu</span></div></div>
-    <div class="notif-item"><div class="dot" style="background:var(--blue)"></div><div><p>COA dan laporan tersedia</p><span>Update SOW v3</span></div></div>
+    <div class="notif-item"><div class="dot" style="background:var(--blue)"></div><div><p>Chart of Accounts & Laporan tersedia</p><span>Update SOW v3</span></div></div>
   </div>
 </div>
 
@@ -505,15 +549,18 @@
 <div class="fo-link"><a href="wireframe_fo.html">🌐 Lihat Front Office →</a></div>
 
 <script>
-let cur='dashboard', notifVis=false, charts={};
+let cur='dashboard', notifVis=false;
 const titles={
   'dashboard':['Dashboard','Ringkasan sistem hari ini'],
-  'trx-input':['Input Transaksi','Catat transaksi baru — pilih Unit Usaha (NEW)'],
-  'lap-coa':['Chart of Accounts','Daftar perkiraan akuntansi (NEW - D7)'],
-  'lap-cashflow':['Laporan Cashflow','Laporan arus kas per Unit Usaha'],
-  'lap-labaru':['Laporan Laba Rugi','Laporan P&L per periode & Unit Usaha (NEW - D8)'],
-  'lap-neraca':['Laporan Neraca','Laporan Neraca Dasar - Balance Sheet (NEW - D9)'],
-  'pengaturan':['Pengaturan Sistem','Konfigurasi sistem & Manajemen Unit Usaha (NEW)'],
+  'dok-list':['Manajemen Dokumen','Semua dokumen koperasi'],
+  'dok-upload':['Upload Dokumen','Tambah dokumen baru'],
+  'trx-list':['Transaksi Keuangan','Semua catatan keuangan'],
+  'trx-input':['Input Transaksi','Catat transaksi baru — pilih Unit Usaha'],
+  'lap-coa':['Chart of Accounts','Daftar perkiraan akuntansi (NEW)'],
+  'lap-cashflow':['Laporan Cashflow','Laporan arus kas'],
+  'lap-labaru':['Laporan Laba Rugi','Laporan P&L (NEW)'],
+  'lap-neraca':['Laporan Neraca','Laporan Neraca Dasar (NEW)'],
+  'pengaturan':['Pengaturan Sistem','Konfigurasi sistem & Unit Usaha'],
 };
 
 function startApp(){document.getElementById('page-login').style.display='none';document.getElementById('app').classList.add('active');go('dashboard');}
@@ -525,6 +572,7 @@ function go(id){
   if(titles[id]){document.getElementById('pg-title').textContent=titles[id][0];document.getElementById('pg-sub').textContent=titles[id][1];}
 }
 function toggleNotif(){notifVis=!notifVis;document.getElementById('notif-panel').classList.toggle('show',notifVis);}
+function showModal(id){const m=document.getElementById(id);if(m)m.classList.add('show');}
 document.addEventListener('click',e=>{
   if(!e.target.closest('.notif-btn')&&!e.target.closest('.notif-panel')){document.getElementById('notif-panel').classList.remove('show');notifVis=false;}
 });
