@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECMS — Back Office Wireframe</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.41.0/apexcharts.min.js"></script>
+<style>
+  :root {
+    --navy:#1F4E79;--blue:#2E75B6;--blue-light:#D6E4F0;--blue-xlight:#EBF3FB;
+    --green:#375623;--green-light:#E2EFDA;--orange:#C55A11;--orange-light:#FCE4D6;
+    --red:#C00000;--gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;
+    --gray-300:#CBD5E1;--gray-400:#94A3B8;--gray-500:#64748B;--gray-600:#475569;
+    --gray-700:#334155;--gray-800:#1E293B;--white:#FFFFFF;
+    --sidebar-w:240px;--header-h:60px;--radius:8px;
+    --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+    --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gray-100);color:var(--gray-800)}
+
+  /* LOGIN */
+  #page-login{display:flex;min-height:100vh}
+  .login-left{width:45%;background:linear-gradient(135deg,var(--navy),var(--blue));display:flex;flex-direction:column;justify-content:center;align-items:center;padding:48px}
+  .login-logo{width:80px;height:80px;background:rgba(255,255,255,.15);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+  .login-logo span{font-size:28px;font-weight:800;color:white}
+  .login-left h1{font-size:26px;font-weight:700;color:white;text-align:center;margin-bottom:8px}
+  .login-left p{font-size:13px;color:rgba(255,255,255,.7);text-align:center;line-height:1.6}
+  .login-features{margin-top:36px;display:flex;flex-direction:column;gap:10px;width:100%}
+  .login-feature{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:8px;padding:11px 14px}
+  .login-feature p{font-size:12px;color:rgba(255,255,255,.9)}
+  .login-right{flex:1;display:flex;align-items:center;justify-content:center;padding:48px;background:white}
+  .login-form{width:100%;max-width:400px}
+  .login-form h2{font-size:24px;font-weight:700;margin-bottom:4px}
+  .login-form .subtitle{font-size:13px;color:var(--gray-400);margin-bottom:28px}
+  .form-group{margin-bottom:18px}
+  .form-group label{display:block;font-size:12px;font-weight:600;color:var(--gray-700);margin-bottom:5px}
+  .form-group input{width:100%;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:13px;outline:none;transition:.2s}
+  .form-group input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-xlight)}
+  .btn-login{width:100%;padding:12px;background:var(--navy);color:white;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer}
+  .btn-login:hover{background:var(--blue)}
+  .login-footer{margin-top:20px;text-align:center;font-size:11px;color:var(--gray-400)}
+
+  /* LAYOUT */
+  .app{display:none;min-height:100vh}
+  .app.active{display:flex}
+
+  /* SIDEBAR */
+  .sidebar{width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
+  .sidebar-logo{padding:18px 18px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .logo-box{display:flex;align-items:center;gap:10px}
+  .logo-icon{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:13px}
+  .logo-text h3{font-size:13px;font-weight:700;color:white}
+  .logo-text p{font-size:10px;color:rgba(255,255,255,.4)}
+  .sidebar-nav{flex:1;overflow-y:auto;padding:10px 0}
+  .nav-section{padding:8px 18px 3px;font-size:10px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;transition:.15s;color:rgba(255,255,255,.65);font-size:13px;border-left:3px solid transparent}
+  .nav-item:hover{background:rgba(255,255,255,.08);color:white}
+  .nav-item.active{background:rgba(255,255,255,.12);color:white;border-left-color:#BDD7EE}
+  .nav-icon{font-size:15px;width:20px;text-align:center}
+  .nav-badge{margin-left:auto;background:var(--orange);color:white;font-size:10px;padding:2px 6px;border-radius:10px;font-weight:600}
+  .sidebar-user{padding:14px 18px;border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px}
+  .user-av{width:34px;height:34px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0}
+  .user-info p{font-size:12px;font-weight:600;color:white}
+  .user-info span{font-size:10px;color:rgba(255,255,255,.45)}
+  .logout-btn{margin-left:auto;background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:15px}
+
+  /* MAIN */
+  .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+  .topbar{height:var(--header-h);background:white;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;padding:0 22px;gap:14px;position:sticky;top:0;z-index:50}
+  .topbar-title h2{font-size:15px;font-weight:700}
+  .topbar-title p{font-size:11px;color:var(--gray-400)}
+  .topbar-actions{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .notif-btn{position:relative;width:34px;height:34px;border-radius:7px;border:1px solid var(--gray-200);background:white;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px}
+  .notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--red);border-radius:50%;border:2px solid white}
+  .content{padding:20px;flex:1}
+
+  /* PAGES */
+  .page{display:none}
+  .page.active{display:block}
+
+  /* CARDS */
+  .card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+  .card-title{font-size:13px;font-weight:700;color:var(--gray-700);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+
+  /* STATS */
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+  .stat-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;display:flex;align-items:center;gap:14px}
+  .stat-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+  .stat-icon.blue{background:var(--blue-xlight)}
+  .stat-icon.green{background:var(--green-light)}
+  .stat-icon.orange{background:var(--orange-light)}
+  .stat-icon.red{background:#FEF2F2}
+  .stat-info p{font-size:21px;font-weight:800;line-height:1}
+  .stat-info span{font-size:11px;color:var(--gray-400);margin-top:2px;display:block}
+  .stat-badge{margin-top:4px;font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;display:inline-block}
+  .up{background:var(--green-light);color:var(--green)}
+  .down{background:#FEF2F2;color:var(--red)}
+  .warn{background:var(--orange-light);color:var(--orange)}
+
+  /* TABLE */
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{background:var(--gray-50);padding:9px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--gray-200)}
+  tbody td{padding:11px 12px;border-bottom:1px solid var(--gray-100);color:var(--gray-700);vertical-align:middle}
+  tbody tr:hover{background:var(--gray-50)}
+  .badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600}
+  .b-blue{background:var(--blue-xlight);color:var(--blue)}
+  .b-green{background:var(--green-light);color:var(--green)}
+  .b-orange{background:var(--orange-light);color:var(--orange)}
+  .b-red{background:#FEF2F2;color:var(--red)}
+  .b-gray{background:var(--gray-100);color:var(--gray-500)}
+
+  /* BUTTONS */
+  .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--radius);font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s}
+  .btn-navy{background:var(--navy);color:white}
+  .btn-navy:hover{background:var(--blue)}
+  .btn-blue{background:var(--blue);color:white}
+  .btn-outline{background:white;color:var(--gray-700);border:1.5px solid var(--gray-200)}
+  .btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+  .btn-sm{padding:4px 9px;font-size:11px}
+  .btn-icon{width:28px;height:28px;padding:0;justify-content:center}
+  .btn-danger{background:white;color:var(--red);border:1.5px solid var(--red)}
+
+  /* FILTERS */
+  .filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .search-input{display:flex;align-items:center;gap:7px;background:white;border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:7px 11px;flex:1;min-width:180px}
+  .search-input input{border:none;outline:none;font-size:13px;width:100%;background:transparent}
+  select.filter-select{padding:7px 11px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:12px;color:var(--gray-700);background:white;outline:none;cursor:pointer}
+  input[type=date].filter-select{padding:6px 10px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:12px;color:var(--gray-700);background:white;outline:none}
+
+  /* FORMS */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .form-full{grid-column:1/-1}
+  .form-field{display:flex;flex-direction:column;gap:5px}
+  .form-field label{font-size:12px;font-weight:600;color:var(--gray-700)}
+  .form-field input,.form-field select,.form-field textarea{padding:8px 11px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:13px;outline:none;font-family:inherit}
+  .form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--blue)}
+  .form-field textarea{resize:vertical;min-height:75px}
+  .upload-zone{border:2px dashed var(--gray-300);border-radius:var(--radius);padding:28px;text-align:center;background:var(--gray-50);cursor:pointer;transition:.2s}
+  .upload-zone:hover{border-color:var(--blue);background:var(--blue-xlight)}
+  .upload-zone p{font-size:12px;color:var(--gray-500);margin-top:6px}
+
+  /* CHARTS */
+  .chart-grid{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:18px}
+  .chart-container{min-height:240px}
+
+  /* ACTIVITY */
+  .activity-list{display:flex;flex-direction:column}
+  .activity-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-100)}
+  .activity-item:last-child{border-bottom:none}
+  .activity-dot{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+  .activity-text p{font-size:12px;color:var(--gray-700)}
+  .activity-text span{font-size:11px;color:var(--gray-400)}
+
+  /* TABS */
+  .tabs{display:flex;border-bottom:2px solid var(--gray-200);margin-bottom:18px}
+  .tab{padding:9px 16px;font-size:12px;font-weight:600;color:var(--gray-500);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s}
+  .tab.active{color:var(--navy);border-bottom-color:var(--navy)}
+
+  /* REPORT CONTROLS */
+  .report-controls{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+  .period-btns{display:flex;border:1.5px solid var(--gray-200);border-radius:var(--radius);overflow:hidden}
+  .period-btn{padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;background:white;border:none;color:var(--gray-500);border-right:1px solid var(--gray-200)}
+  .period-btn:last-child{border-right:none}
+  .period-btn.active{background:var(--navy);color:white}
+
+  /* PAGINATION */
+  .pagination{display:flex;align-items:center;padding:11px 12px;border-top:1px solid var(--gray-100);gap:8px}
+  .pagination span{font-size:12px;color:var(--gray-400);flex:1}
+  .page-btns{display:flex;gap:3px}
+  .page-btn{width:26px;height:26px;border:1px solid var(--gray-200);border-radius:5px;background:white;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .page-btn.active{background:var(--navy);color:white;border-color:var(--navy)}
+
+  /* DOC META */
+  .doc-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .doc-meta-item{background:var(--gray-50);border-radius:6px;padding:9px 11px}
+  .doc-meta-item label{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;display:block;margin-bottom:2px}
+  .doc-meta-item p{font-size:12px;color:var(--gray-700);font-weight:600}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300;display:none;align-items:center;justify-content:center}
+  .modal-overlay.show{display:flex}
+  .modal{background:white;border-radius:12px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+  .modal-header{padding:18px 22px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;z-index:10}
+  .modal-header h3{font-size:15px;font-weight:700}
+  .modal-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--gray-400);width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+  .modal-close:hover{background:var(--gray-100)}
+  .modal-body{padding:22px}
+  .modal-footer{padding:14px 22px;border-top:1px solid var(--gray-200);display:flex;justify-content:flex-end;gap:9px}
+
+  /* NOTIFICATION PANEL */
+  .notif-panel{position:fixed;top:60px;right:22px;width:310px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-md);border:1px solid var(--gray-200);z-index:200;display:none}
+  .notif-panel.show{display:block}
+  .notif-header{padding:11px 14px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+  .notif-header h4{font-size:13px;font-weight:700}
+  .notif-list{max-height:300px;overflow-y:auto}
+  .notif-item{padding:11px 14px;border-bottom:1px solid var(--gray-50);display:flex;gap:9px;align-items:flex-start}
+  .notif-item .dot{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0}
+  .notif-item p{font-size:12px;color:var(--gray-700)}
+  .notif-item span{font-size:11px;color:var(--gray-400)}
+
+  /* LINK TO FRONT OFFICE */
+  .fo-link{position:fixed;bottom:20px;right:20px;z-index:500}
+  .fo-link a{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:var(--navy);color:white;border-radius:20px;font-size:12px;font-weight:700;text-decoration:none;box-shadow:var(--shadow-md)}
+
+  @media(max-width:768px){
+    .stats-grid{grid-template-columns:1fr 1fr}
+    .chart-grid{grid-template-columns:1fr}
+    .form-grid{grid-template-columns:1fr}
+    .login-left{display:none}
+  }
+
+  .b-navy{background:var(--navy);color:white}
+  .btn-success{background:var(--green-light);color:var(--green);border:1.5px solid var(--green)}
+  .btn-danger{background:white;color:var(--red);border:1.5px solid var(--red)}
+  .field-hint{font-size:11px;color:var(--gray-400);margin-top:2px}
+  .unit-banner{background:var(--blue-xlight);border:1px solid var(--blue-light);border-radius:var(--radius);padding:8px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--blue);font-weight:600}
+  .unit-tag{font-size:10px;font-weight:600;color:var(--blue);background:var(--blue-xlight);padding:1px 6px;border-radius:3px;display:inline-block}
+  .neraca-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .lr-section td{background:var(--blue-xlight);font-weight:700;color:var(--navy);padding:8px 12px}
+  .lr-total td{background:var(--navy);color:white;font-weight:800;padding:10px 12px}
+  .lr-sub{padding-left:28px!important}
+  .profile-avatar{width:72px;height:72px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:white;margin:0 auto 12px}
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray-100)}
+  .toggle-label p{font-size:13px;font-weight:600;color:var(--gray-700)}
+  .toggle-label span{font-size:11px;color:var(--gray-400)}
+  .toggle{width:40px;height:22px;background:var(--blue);border-radius:11px;position:relative;cursor:pointer;flex-shrink:0}
+  .toggle::after{content:'';position:absolute;top:2px;right:2px;width:18px;height:18px;background:white;border-radius:50%}
+  .approval-pending td{border-left:3px solid var(--orange)}
+  .approval-approved td{border-left:3px solid var(--green)}
+  .approval-rejected td{border-left:3px solid var(--red)}
+  .setting-panel{display:none}
+  .setting-panel.active{display:block}
+  .tabs{flex-wrap:wrap}
+  .notif-item .unit-tag{margin-top:3px}
+  .stats-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+  .stats-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="page-login">
+  <div class="login-left">
+    <div class="login-logo"><span>KMP</span></div>
+    <h1>ECMS Back Office</h1>
+    <p>Sistem Manajemen Internal<br>KMP Bali Bangkit Sejahtera</p>
+    <div class="login-features">
+      <div class="login-feature"><span>📁</span><p>Manajemen Dokumen Digital — MOU, Akta, Kontrak, SOP</p></div>
+      <div class="login-feature"><span>💰</span><p>Pencatatan Keuangan & Cashflow Koperasi</p></div>
+      <div class="login-feature"><span>📊</span><p>Reporting, Grafik & Laporan Otomatis</p></div>
+      <div class="login-feature"><span>🔐</span><p>6 Level Hak Akses — Multi-Role RBAC</p></div>
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="login-form">
+      <h2>Selamat Datang</h2>
+      <p class="subtitle">Masuk ke Back Office KMP BBS</p>
+      <div class="form-group"><label>Email / Username</label><input type="email" value="admin@kmpbbs.id"></div>
+      <div class="form-group"><label>Password</label><input type="password" value="••••••••"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" checked> Ingat saya</label>
+        <a href="#" style="font-size:12px;color:var(--blue);text-decoration:none">Lupa password?</a>
+      </div>
+      <button class="btn-login" onclick="startApp()">Masuk ke Sistem →</button>
+      <p class="login-footer">ECMS v1.0 — KMP Bali Bangkit Sejahtera © 2026</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- APP -->
+<div id="app" class="app">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-box">
+        <div class="logo-icon">KMP</div>
+        <div class="logo-text"><h3>ECMS</h3><p>Back Office v2</p></div>
+      </div>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="nav-section">Utama</div>
+      <div class="nav-item active" onclick="go('dashboard')"><span class="nav-icon">🏠</span>Dashboard</div>
+      <div class="nav-section">Dokumen</div>
+      <div class="nav-item" onclick="go('dok-list')"><span class="nav-icon">📁</span>Semua Dokumen</div>
+      <div class="nav-item" onclick="go('dok-upload')"><span class="nav-icon">⬆️</span>Upload Dokumen</div>
+      <div class="nav-item" onclick="go('dok-detail')"><span class="nav-icon">📄</span>Detail Dokumen</div>
+      <div class="nav-section">Keuangan</div>
+      <div class="nav-item" onclick="go('trx-list')"><span class="nav-icon">💳</span>Transaksi</div>
+      <div class="nav-item" onclick="go('trx-input')"><span class="nav-icon">➕</span>Input Transaksi</div>
+      <div class="nav-item" onclick="go('trx-approval')"><span class="nav-icon">✅</span>Approval<span class="nav-badge">3</span></div>
+      <div class="nav-section">Laporan & Akuntansi</div>
+      <div class="nav-item" onclick="go('lap-coa')"><span class="nav-icon">📋</span>Chart of Accounts</div>
+      <div class="nav-item" onclick="go('lap-cashflow')"><span class="nav-icon">📈</span>Laporan Cashflow</div>
+      <div class="nav-item" onclick="go('lap-labaru')"><span class="nav-icon">💹</span>Laporan Laba Rugi</div>
+      <div class="nav-item" onclick="go('lap-neraca')"><span class="nav-icon">📑</span>Laporan Neraca</div>
+      <div class="nav-item" onclick="go('lap-kategori')"><span class="nav-icon">🏷️</span>Per Kategori</div>
+      <div class="nav-item" onclick="go('lap-tahunan')"><span class="nav-icon">📅</span>Laporan Tahunan</div>
+      <div class="nav-item" onclick="go('lap-grafik')"><span class="nav-icon">📊</span>Grafik Keuangan</div>
+      <div class="nav-section">Sistem</div>
+      <div class="nav-item" onclick="go('user-list')"><span class="nav-icon">👥</span>Manajemen User</div>
+      <div class="nav-item" onclick="go('profil-user')"><span class="nav-icon">👤</span>Profil Saya</div>
+      <div class="nav-item" onclick="go('notif-center')"><span class="nav-icon">🔔</span>Notifikasi<span class="nav-badge">4</span></div>
+      <div class="nav-item" onclick="go('pengaturan')"><span class="nav-icon">⚙️</span>Pengaturan</div>
+      <div class="nav-item" onclick="go('log-aktivitas')"><span class="nav-icon">📋</span>Log Aktivitas</div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-av">RA</div>
+      <div class="user-info"><p>Robertus Adi</p><span>Super Admin</span></div>
+      <button class="logout-btn" onclick="logout()" title="Keluar">🚪</button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">
+        <h2 id="pg-title">Dashboard</h2>
+        <p id="pg-sub">Ringkasan sistem hari ini</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="notif-btn" onclick="toggleNotif()">🔔<span class="notif-dot"></span></div>
+        <button class="btn btn-navy btn-sm" onclick="go('dok-upload')">+ Upload</button>
+      </div>
+    </div>
+    <div class="content">
+
+
+<div id="pg-dashboard" class="page active">
+  <div class="unit-banner">🏢 Anda login sebagai <strong>Super Admin</strong> — menampilkan data seluruh koperasi</div>
+  <div class="stats-grid-4">
+    <div class="stat-card"><div class="stat-icon blue">📁</div><div class="stat-info"><p>47</p><span>Total Dokumen</span><div class="stat-badge up">+5 bulan ini</div></div></div>
+    <div class="stat-card"><div class="stat-icon orange">⚠️</div><div class="stat-info"><p>3</p><span>Akan Expired</span><div class="stat-badge warn">dalam 30 hari</div></div></div>
+    <div class="stat-card"><div class="stat-icon green">💰</div><div class="stat-info"><p>Rp 48,5 jt</p><span>Saldo Global</span><div class="stat-badge up">+Rp 3,2 jt</div></div></div>
+    <div class="stat-card"><div class="stat-icon red">📋</div><div class="stat-info"><p>3</p><span>Pending Approval</span><div class="stat-badge down">perlu tindakan</div></div></div>
+  </div>
+  <div class="chart-grid">
+    <div class="card"><div class="card-title"><span>📈</span>Arus Kas 6 Bulan Terakhir</div><div id="chart-db" class="chart-container"></div></div>
+    <div class="card"><div class="card-title"><span>🔔</span>Aktivitas Terbaru</div>
+      <div class="activity-list">
+        <div class="activity-item"><div class="activity-dot" style="background:var(--blue-xlight)">⬆️</div><div class="activity-text"><p>MOU PT Sinar Bali diupload</p><span>2 jam lalu — I Wayan Karma · <strong>Unit UMKM</strong></span></div></div>
+        <div class="activity-item"><div class="activity-dot" style="background:var(--green-light)">💰</div><div class="activity-text"><p>Transaksi masuk Rp 5.000.000</p><span>3 jam lalu — Bendahara · <strong>Unit Pertanian</strong></span></div></div>
+        <div class="activity-item"><div class="activity-dot" style="background:#FEF2F2">⚠️</div><div class="activity-text"><p>Kontrak sewa kantor expired H-14</p><span>Notifikasi otomatis · <strong>Global</strong></span></div></div>
+        <div class="activity-item"><div class="activity-dot" style="background:var(--orange-light)">👤</div><div class="activity-text"><p>User baru: Ni Made Sari ditambahkan</p><span>Kemarin — Super Admin · <strong>Unit Digital</strong></span></div></div>
+        <div class="activity-item"><div class="activity-dot" style="background:var(--blue-xlight)">✅</div><div class="activity-text"><p>Transaksi Rp 15 jt menunggu approval</p><span>1 hari lalu · <strong>Unit Pertanian</strong></span></div></div>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+    <div class="card">
+      <div class="card-title"><span>🏭</span>Saldo per Unit Usaha</div>
+      <table><thead><tr><th>Unit Usaha</th><th>Masuk</th><th>Keluar</th><th style="text-align:right">Saldo</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-green">Pertanian</span></td><td style="color:var(--green)">+Rp 8,2 jt</td><td style="color:var(--red)">-Rp 5,1 jt</td><td style="font-weight:700;text-align:right">Rp 18,5 jt</td></tr>
+        <tr><td><span class="badge b-blue">UMKM</span></td><td style="color:var(--green)">+Rp 9,4 jt</td><td style="color:var(--red)">-Rp 6,3 jt</td><td style="font-weight:700;text-align:right">Rp 14,2 jt</td></tr>
+        <tr><td><span class="badge b-orange">Digital</span></td><td style="color:var(--green)">+Rp 4,8 jt</td><td style="color:var(--red)">-Rp 3,2 jt</td><td style="font-weight:700;text-align:right">Rp 10,1 jt</td></tr>
+        <tr><td><span class="badge b-gray">Pusat</span></td><td style="color:var(--green)">+Rp 2,1 jt</td><td style="color:var(--red)">-Rp 3,6 jt</td><td style="font-weight:700;text-align:right">Rp 5,7 jt</td></tr>
+        <tr style="background:var(--gray-50);font-weight:700"><td>Total</td><td style="color:var(--green)">+Rp 24,5 jt</td><td style="color:var(--red)">-Rp 18,2 jt</td><td style="text-align:right">Rp 48,5 jt</td></tr>
+      </tbody></table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card">
+        <div class="card-title"><span>📁</span>Dokumen Akan Expired</div>
+        <table><thead><tr><th>Dokumen</th><th>Unit</th><th>Sisa</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Kontrak Sewa Kantor</td><td><span class="badge b-gray">Global</span></td><td style="color:var(--red);font-weight:600">14 hari</td><td><span class="badge b-red">Kritis</span></td></tr>
+          <tr><td>MOU Supplier Alat</td><td><span class="badge b-blue">UMKM</span></td><td>22 hari</td><td><span class="badge b-orange">Perhatian</span></td></tr>
+          <tr><td>Izin Operasional</td><td><span class="badge b-green">Pertanian</span></td><td>28 hari</td><td><span class="badge b-orange">Perhatian</span></td></tr>
+        </tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-title"><span>✅</span>Pending Approval</div>
+        <table><thead><tr><th>Keterangan</th><th>Unit</th><th>Jumlah</th><th>Aksi</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:12px">Pembelian Peralatan</td><td><span class="badge b-green" style="font-size:10px">Pertanian</span></td><td style="color:var(--red);font-weight:600">-Rp 8,5 jt</td><td><button class="btn btn-navy btn-sm" onclick="go('trx-approval')">Lihat</button></td></tr>
+          <tr><td style="font-size:12px">Biaya Proyek Batch 3</td><td><span class="badge b-blue" style="font-size:10px">UMKM</span></td><td style="color:var(--red);font-weight:600">-Rp 15 jt</td><td><button class="btn btn-navy btn-sm" onclick="go('trx-approval')">Lihat</button></td></tr>
+          <tr><td style="font-size:12px">Investasi Alat</td><td><span class="badge b-green" style="font-size:10px">Pertanian</span></td><td style="color:var(--red);font-weight:600">-Rp 25 jt</td><td><button class="btn btn-navy btn-sm" onclick="go('trx-approval')">Lihat</button></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-dok-list" class="page">
+  <div class="filter-bar">
+    <div class="search-input"><span>🔍</span><input placeholder="Cari dokumen..."></div>
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Global</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option></select>
+    <select class="filter-select"><option>Semua Kategori</option><option>MOU</option><option>Akta</option><option>Kontrak</option><option>SK</option><option>Sertifikat</option><option>Legalitas</option><option>SOP</option></select>
+    <select class="filter-select"><option>Semua Status</option><option>Aktif</option><option>Akan Expired</option><option>Expired</option></select>
+    <button class="btn btn-navy" onclick="go('dok-upload')">+ Upload Dokumen</button>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table><thead><tr><th>Nama Dokumen</th><th>Unit Usaha</th><th>Kategori</th><th>Upload</th><th>Expired</th><th>Diupload</th><th>Hak Akses</th><th>Status</th><th>Aksi</th></tr></thead>
+      <tbody>
+        <tr><td><div style="display:flex;align-items:center;gap:7px"><span>📄</span><div><p style="font-weight:600;font-size:12px">Akta Pendirian KMP BBS</p><p style="font-size:11px;color:var(--gray-400)">akta_pendirian.pdf · 2.4MB</p></div></div></td><td><span class="badge b-gray">Global</span></td><td><span class="badge b-blue">Akta</span></td><td>12 Jan 2026</td><td style="color:var(--green);font-weight:600">31 Des 2030</td><td>Super Admin</td><td><span class="badge b-gray">Terbatas</span></td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon" onclick="go('dok-detail')">👁️</button><button class="btn btn-outline btn-sm btn-icon">⬇️</button><button class="btn btn-outline btn-sm btn-icon">✏️</button></div></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:7px"><span>📄</span><div><p style="font-weight:600;font-size:12px">MOU Kerjasama PT Sinar Bali</p><p style="font-size:11px;color:var(--gray-400)">mou_sinar_bali.pdf · 1.8MB</p></div></div></td><td><span class="badge b-blue">Unit UMKM</span></td><td><span class="badge b-blue">MOU</span></td><td>10 Jun 2026</td><td style="color:var(--orange);font-weight:600">22 hari lagi</td><td>I Wayan Karma</td><td><span class="badge b-blue">Unit UMKM</span></td><td><span class="badge b-orange">Perhatian</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon" onclick="go('dok-detail')">👁️</button><button class="btn btn-outline btn-sm btn-icon">⬇️</button><button class="btn btn-outline btn-sm btn-icon">✏️</button></div></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:7px"><span>📄</span><div><p style="font-weight:600;font-size:12px">SOP Pengelolaan Lahan Organik</p><p style="font-size:11px;color:var(--gray-400)">sop_lahan.pdf · 0.9MB</p></div></div></td><td><span class="badge b-green">Unit Pertanian</span></td><td><span class="badge b-gray">SOP</span></td><td>5 Mar 2026</td><td style="color:var(--green);font-weight:600">5 Mar 2028</td><td>I Made Sudana</td><td><span class="badge b-green">Unit Pertanian</span></td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon" onclick="go('dok-detail')">👁️</button><button class="btn btn-outline btn-sm btn-icon">⬇️</button><button class="btn btn-outline btn-sm btn-icon">✏️</button></div></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:7px"><span>📄</span><div><p style="font-weight:600;font-size:12px">Kontrak Sewa Kantor Digital</p><p style="font-size:11px;color:var(--gray-400)">kontrak_kantor.pdf · 1.1MB</p></div></div></td><td><span class="badge b-orange">Unit Digital</span></td><td><span class="badge b-orange">Kontrak</span></td><td>1 Jun 2025</td><td style="color:var(--red);font-weight:600">14 hari lagi</td><td>Ni Made Sari</td><td><span class="badge b-orange">Unit Digital</span></td><td><span class="badge b-red">Kritis</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon" onclick="go('dok-detail')">👁️</button><button class="btn btn-outline btn-sm btn-icon">⬇️</button><button class="btn btn-outline btn-sm btn-icon">✏️</button></div></td></tr>
+      </tbody></table>
+    </div>
+    <div class="pagination"><span>Menampilkan 1-4 dari 47 dokumen</span><div class="page-btns"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">›</button></div></div>
+  </div>
+</div>
+
+
+<div id="pg-dok-upload" class="page">
+  <div class="card" style="max-width:680px">
+    <div class="form-grid">
+      <div class="form-field form-full"><label>Upload File *</label><div class="upload-zone"><div style="font-size:32px">📁</div><p><strong>Klik untuk pilih file</strong> atau drag &amp; drop</p><p style="font-size:11px;margin-top:3px">PDF, Word, Excel, JPG, PNG — Maks 50MB</p></div></div>
+      <div class="form-field form-full"><label>Judul / Nama Dokumen *</label><input type="text" placeholder="Contoh: MOU Kerjasama PT Sinar Bali 2026"></div>
+      <div class="form-field form-full">
+        <label>Tipe Dokumen *</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:2px solid var(--gray-200);border-radius:var(--radius);cursor:pointer;font-size:12px;font-weight:600;color:var(--gray-600)"><input type="radio" name="dok-tipe"> 🌐 Dokumen Global <small style="font-weight:400;color:var(--gray-400)">(milik seluruh koperasi)</small></label>
+          <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:2px solid var(--blue);border-radius:var(--radius);background:var(--blue-xlight);cursor:pointer;font-size:12px;font-weight:600;color:var(--blue)"><input type="radio" name="dok-tipe" checked> 🏭 Dokumen Unit Usaha</label>
+        </div>
+      </div>
+      <div class="form-field form-full"><label>Unit Usaha *</label><select><option>-- Pilih Unit Usaha --</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select><p class="field-hint">Wajib jika tipe Dokumen Unit Usaha</p></div>
+      <div class="form-field"><label>Kategori *</label><select><option>-- Pilih --</option><option>MOU</option><option>Akta</option><option>Kontrak</option><option>SK</option><option>Sertifikat</option><option>Legalitas</option><option>SOP</option><option>Lainnya</option></select></div>
+      <div class="form-field"><label>Nomor Dokumen</label><input type="text" placeholder="Contoh: MOU/2026/001"></div>
+      <div class="form-field"><label>Tanggal Berlaku</label><input type="date" value="2026-06-10"></div>
+      <div class="form-field"><label>Tanggal Expired</label><input type="date" value="2027-06-10"></div>
+      <div class="form-field form-full"><label>Pihak yang Terlibat</label><input type="text" placeholder="Contoh: PT Sinar Bali Sejahtera, KMP BBS"></div>
+      <div class="form-field form-full"><label>Deskripsi</label><textarea placeholder="Deskripsi singkat tentang dokumen ini..."></textarea></div>
+      <div class="form-field"><label>Tags</label><input type="text" placeholder="kerjasama, supplier, 2026"></div>
+      <div class="form-field"><label>Hak Akses</label><select><option>Semua Pengurus</option><option>Role Tertentu</option><option>User Tertentu</option><option>Unit Usaha Tertentu</option></select></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:18px">
+      <button class="btn btn-outline" onclick="go('dok-list')">Batal</button>
+      <button class="btn btn-navy" onclick="go('dok-list')">⬆️ Upload Dokumen</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-dok-detail" class="page">
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px">
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div><h3 style="font-size:15px;font-weight:700">MOU Kerjasama PT Sinar Bali</h3><p style="font-size:11px;color:var(--gray-400);margin-top:2px">mou_sinar_bali.pdf · 1.8 MB · Unit UMKM</p></div>
+          <div style="display:flex;gap:7px"><button class="btn btn-outline">⬇️ Download</button><button class="btn btn-navy">✏️ Edit</button></div>
+        </div>
+        <div style="background:var(--gray-100);border-radius:var(--radius);height:360px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gray-200)">
+          <div style="text-align:center;color:var(--gray-400)"><div style="font-size:48px;margin-bottom:12px">📄</div><p style="font-size:13px;font-weight:600">Preview PDF</p><p style="font-size:11px;margin-top:4px">mou_sinar_bali.pdf</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="tabs" id="dok-detail-tabs">
+          <div class="tab active" onclick="switchDokTab(0)">📋 Metadata</div>
+          <div class="tab" onclick="switchDokTab(1)">🔄 Riwayat Versi</div>
+          <div class="tab" onclick="switchDokTab(2)">⬇️ Log Download</div>
+        </div>
+        <div id="dok-panel-0">
+          <div class="doc-meta">
+            <div class="doc-meta-item"><label>Kategori</label><p>MOU</p></div>
+            <div class="doc-meta-item"><label>Unit Usaha</label><p>Unit UMKM</p></div>
+            <div class="doc-meta-item"><label>Nomor Dokumen</label><p>MOU/2026/042</p></div>
+            <div class="doc-meta-item"><label>Tgl Berlaku</label><p>10 Jun 2026</p></div>
+            <div class="doc-meta-item"><label>Tgl Expired</label><p style="color:var(--orange);font-weight:700">10 Jul 2026 (22 hari)</p></div>
+            <div class="doc-meta-item"><label>Pihak Terlibat</label><p>PT Sinar Bali, KMP BBS</p></div>
+            <div class="doc-meta-item"><label>Hak Akses</label><p>Unit UMKM</p></div>
+            <div class="doc-meta-item"><label>Diupload Oleh</label><p>I Wayan Karma</p></div>
+            <div class="doc-meta-item" style="grid-column:1/-1"><label>Tags</label><p>kerjasama, mou, sinar-bali, 2026</p></div>
+          </div>
+        </div>
+        <div id="dok-panel-1" style="display:none">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="padding:10px 12px;background:var(--blue-xlight);border-radius:6px;border-left:3px solid var(--blue);display:flex;justify-content:space-between;align-items:center"><div><strong style="font-size:12px">v3 — Terbaru</strong><p style="font-size:11px;color:var(--gray-500);margin-top:2px">10 Jun 2026 — I Wayan Karma</p></div><span class="badge b-blue">Aktif</span></div>
+            <div style="padding:10px 12px;background:var(--gray-50);border-radius:6px;display:flex;justify-content:space-between;align-items:center"><div><strong style="font-size:12px">v2</strong><p style="font-size:11px;color:var(--gray-500);margin-top:2px">15 Feb 2026 — Super Admin</p></div><button class="btn btn-outline btn-sm">⬇️</button></div>
+            <div style="padding:10px 12px;background:var(--gray-50);border-radius:6px;display:flex;justify-content:space-between;align-items:center"><div><strong style="font-size:12px">v1</strong><p style="font-size:11px;color:var(--gray-500);margin-top:2px">10 Jan 2026 — Super Admin</p></div><button class="btn btn-outline btn-sm">⬇️</button></div>
+          </div>
+        </div>
+        <div id="dok-panel-2" style="display:none">
+          <table><thead><tr><th>Waktu</th><th>User</th><th>Unit Usaha</th><th>Aksi</th></tr></thead>
+          <tbody>
+            <tr><td>10 Jun 09:20</td><td>I Wayan Karma</td><td><span class="badge b-blue">Unit UMKM</span></td><td><span class="badge b-gray">Download</span></td></tr>
+            <tr><td>5 Jun 14:30</td><td>Robertus Adi</td><td><span class="badge b-gray">Global</span></td><td><span class="badge b-gray">Download</span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card">
+        <div class="card-title"><span>ℹ️</span>Informasi File</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--gray-500)">Tipe File</span><span class="badge b-red">PDF</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--gray-500)">Ukuran</span><strong>1.8 MB</strong></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--gray-500)">Versi</span><strong>v3 (terbaru)</strong></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--gray-500)">Unit Usaha</span><span class="badge b-blue">Unit UMKM</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--gray-500)">Status</span><span class="badge b-orange">Perhatian</span></div>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gray-100)">
+          <button class="btn btn-outline" style="width:100%;justify-content:center;margin-bottom:8px">⬆️ Upload Versi Baru</button>
+          <button class="btn btn-danger" style="width:100%;justify-content:center">🗑️ Hapus Dokumen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-trx-list" class="page">
+  <div class="stats-grid-4">
+    <div class="stat-card"><div class="stat-icon green">⬆️</div><div class="stat-info"><p>Rp 24,5 jt</p><span>Total Masuk (Juni)</span><div class="stat-badge up">+12%</div></div></div>
+    <div class="stat-card"><div class="stat-icon red">⬇️</div><div class="stat-info"><p>Rp 18,2 jt</p><span>Total Keluar (Juni)</span><div class="stat-badge down">+8%</div></div></div>
+    <div class="stat-card"><div class="stat-icon blue">💰</div><div class="stat-info"><p>Rp 48,5 jt</p><span>Saldo Global</span><div class="stat-badge up">Sehat</div></div></div>
+    <div class="stat-card"><div class="stat-icon orange">⏳</div><div class="stat-info"><p>3</p><span>Pending Approval</span><div class="stat-badge warn">perlu tindakan</div></div></div>
+  </div>
+  <div class="filter-bar">
+    <div class="search-input"><span>🔍</span><input placeholder="Cari transaksi..."></div>
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select>
+    <select class="filter-select"><option>Semua Jenis</option><option>Pemasukan</option><option>Pengeluaran</option></select>
+    <select class="filter-select"><option>Semua Kategori</option><option>Operasional</option><option>Gaji</option><option>Proyek</option><option>Investasi</option></select>
+    <input type="date" class="filter-select" value="2026-06-01">
+    <input type="date" class="filter-select" value="2026-06-30">
+    <button class="btn btn-navy" onclick="go('trx-input')">+ Input Transaksi</button>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Unit Usaha</th><th>Kategori</th><th>Jenis</th><th>Jumlah</th><th>Saldo Unit</th><th>Status</th><th>Aksi</th></tr></thead>
+      <tbody>
+        <tr><td>10 Jun</td><td>Iuran Bulanan Anggota</td><td><span class="badge b-gray">Pusat</span></td><td><span class="badge b-blue">Operasional</span></td><td><span class="badge b-green">Masuk</span></td><td style="color:var(--green);font-weight:700">+Rp 5 jt</td><td>Rp 5,7 jt</td><td><span class="badge b-green">Approved</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm">Detail</button><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td>9 Jun</td><td>Pembelian Bibit Padi</td><td><span class="badge b-green">Pertanian</span></td><td><span class="badge b-orange">Proyek</span></td><td><span class="badge b-red">Keluar</span></td><td style="color:var(--red);font-weight:700">-Rp 3,2 jt</td><td>Rp 18,5 jt</td><td><span class="badge b-green">Approved</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm">Detail</button><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td>8 Jun</td><td>Jasa Konsultasi Digital</td><td><span class="badge b-orange">Digital</span></td><td><span class="badge b-blue">Proyek</span></td><td><span class="badge b-green">Masuk</span></td><td style="color:var(--green);font-weight:700">+Rp 4,8 jt</td><td>Rp 10,1 jt</td><td><span class="badge b-green">Approved</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm">Detail</button><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr style="background:var(--orange-light)"><td>8 Jun</td><td>Pembelian Peralatan Kantor</td><td><span class="badge b-green">Pertanian</span></td><td><span class="badge b-gray">Operasional</span></td><td><span class="badge b-red">Keluar</span></td><td style="color:var(--red);font-weight:700">-Rp 8,5 jt</td><td>—</td><td><span class="badge b-orange">Pending</span></td><td><button class="btn btn-navy btn-sm" onclick="go('trx-approval')">Approve</button></td></tr>
+      </tbody></table>
+    </div>
+    <div class="pagination"><span>Menampilkan 1-4 dari 48 transaksi</span><div class="page-btns"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">›</button></div></div>
+  </div>
+</div>
+
+
+<div id="pg-trx-input" class="page">
+  <div class="card" style="max-width:580px">
+    <div class="form-grid">
+      <div class="form-field form-full"><label>Unit Usaha *</label><select required><option>-- Pilih Unit Usaha --</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select><p class="field-hint">Wajib diisi — data laporan per unit bergantung pada field ini</p></div>
+      <div class="form-field form-full"><label>Jenis Transaksi *</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <label style="display:flex;align-items:center;gap:7px;padding:9px 11px;border:2px solid var(--green);border-radius:var(--radius);background:var(--green-light);cursor:pointer;font-size:12px;font-weight:600;color:var(--green)"><input type="radio" name="jenis" checked> ⬆️ Pemasukan</label>
+          <label style="display:flex;align-items:center;gap:7px;padding:9px 11px;border:2px solid var(--gray-200);border-radius:var(--radius);cursor:pointer;font-size:12px;font-weight:600;color:var(--gray-500)"><input type="radio" name="jenis"> ⬇️ Pengeluaran</label>
+        </div>
+      </div>
+      <div class="form-field form-full"><label>Keterangan *</label><input type="text" placeholder="Contoh: Iuran bulanan anggota Juni 2026"></div>
+      <div class="form-field"><label>Jumlah (Rp) *</label><input type="number" placeholder="5000000"></div>
+      <div class="form-field"><label>Tanggal *</label><input type="date" value="2026-06-10"></div>
+      <div class="form-field"><label>Kategori *</label><select><option>Operasional</option><option>Gaji</option><option>Proyek</option><option>Investasi</option><option>Lainnya</option></select></div>
+      <div class="form-field"><label>Perlu Approval?</label><select><option>Tidak (bawah Rp 5 juta)</option><option>Ya (di atas Rp 5 juta)</option></select></div>
+      <div class="form-field form-full"><label>Bukti Transaksi (Opsional)</label><div class="upload-zone" style="padding:14px"><p>📎 Upload foto struk / bukti transfer</p></div></div>
+      <div class="form-field form-full"><label>Catatan</label><textarea placeholder="Catatan tambahan..."></textarea></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:18px">
+      <button class="btn btn-outline" onclick="go('trx-list')">Batal</button>
+      <button class="btn btn-navy" onclick="go('trx-list')">💾 Simpan Transaksi</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-trx-approval" class="page">
+  <div class="stats-grid-3">
+    <div class="stat-card"><div class="stat-icon orange">⏳</div><div class="stat-info"><p>3</p><span>Menunggu Approval</span></div></div>
+    <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-info"><p>24</p><span>Disetujui Bulan Ini</span></div></div>
+    <div class="stat-card"><div class="stat-icon red">❌</div><div class="stat-info"><p>2</p><span>Ditolak Bulan Ini</span></div></div>
+  </div>
+  <div class="filter-bar">
+    <div class="search-input"><span>🔍</span><input placeholder="Cari transaksi..."></div>
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option></select>
+    <select class="filter-select"><option>Semua Status</option><option>Menunggu</option><option>Disetujui</option><option>Ditolak</option></select>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-title"><span>⏳</span>Menunggu Approval</div>
+    <div class="table-wrap">
+      <table><thead><tr><th>Tanggal</th><th>Pengaju</th><th>Unit Usaha</th><th>Kategori</th><th>Nominal</th><th>Keterangan</th><th>Bukti</th><th>Aksi</th></tr></thead>
+      <tbody>
+        <tr class="approval-pending"><td style="font-size:12px">10 Jun</td><td><span class="badge b-orange">I Wayan Karma</span></td><td><span class="badge b-green">Pertanian</span></td><td><span class="badge b-gray">Operasional</span></td><td style="font-weight:700;color:var(--red)">Rp 8.500.000</td><td style="font-size:12px;max-width:140px">Pembelian peralatan kantor</td><td><button class="btn btn-outline btn-sm">📎</button></td><td><div style="display:flex;gap:4px"><button class="btn btn-success btn-sm">✓ Setuju</button><button class="btn btn-danger btn-sm">✗ Tolak</button></div></td></tr>
+        <tr class="approval-pending"><td style="font-size:12px">9 Jun</td><td><span class="badge b-blue">Ni Made Sari</span></td><td><span class="badge b-blue">UMKM</span></td><td><span class="badge b-orange">Proyek</span></td><td style="font-weight:700;color:var(--red)">Rp 15.000.000</td><td style="font-size:12px;max-width:140px">Biaya proyek digitalisasi UMKM Batch 3</td><td><button class="btn btn-outline btn-sm">📎</button></td><td><div style="display:flex;gap:4px"><button class="btn btn-success btn-sm">✓ Setuju</button><button class="btn btn-danger btn-sm">✗ Tolak</button></div></td></tr>
+        <tr class="approval-pending"><td style="font-size:12px">8 Jun</td><td><span class="badge b-gray">Ketut Suartha</span></td><td><span class="badge b-green">Pertanian</span></td><td><span class="badge b-navy">Investasi</span></td><td style="font-weight:700;color:var(--red)">Rp 25.000.000</td><td style="font-size:12px;max-width:140px">Investasi alat produksi pertanian</td><td><button class="btn btn-outline btn-sm">📎</button></td><td><div style="display:flex;gap:4px"><button class="btn btn-success btn-sm">✓ Setuju</button><button class="btn btn-danger btn-sm">✗ Tolak</button></div></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span>📋</span>Riwayat Approval</div>
+    <div class="table-wrap">
+      <table><thead><tr><th>Tanggal</th><th>Pengaju</th><th>Unit Usaha</th><th>Nominal</th><th>Diproses</th><th>Status</th><th>Catatan</th></tr></thead>
+      <tbody>
+        <tr class="approval-approved"><td style="font-size:12px">7 Jun</td><td>I Wayan Karma</td><td><span class="badge b-green">Pertanian</span></td><td style="color:var(--red);font-weight:600">Rp 6.200.000</td><td style="font-size:12px">Robertus Adi</td><td><span class="badge b-green">Disetujui</span></td><td style="font-size:12px">—</td></tr>
+        <tr class="approval-rejected"><td style="font-size:12px">5 Jun</td><td>Ni Made Sari</td><td><span class="badge b-blue">UMKM</span></td><td style="color:var(--red);font-weight:600">Rp 12.000.000</td><td style="font-size:12px">Robertus Adi</td><td><span class="badge b-red">Ditolak</span></td><td style="font-size:12px">Anggaran belum tersedia</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-lap-coa" class="page">
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px">
+    <div class="card" style="padding:12px;text-align:center"><p style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase">Pendapatan</p><p style="font-size:20px;font-weight:800;color:var(--green);margin-top:4px">8</p></div>
+    <div class="card" style="padding:12px;text-align:center"><p style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase">Beban</p><p style="font-size:20px;font-weight:800;color:var(--red);margin-top:4px">12</p></div>
+    <div class="card" style="padding:12px;text-align:center"><p style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase">Aset</p><p style="font-size:20px;font-weight:800;color:var(--blue);margin-top:4px">6</p></div>
+    <div class="card" style="padding:12px;text-align:center"><p style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase">Kewajiban</p><p style="font-size:20px;font-weight:800;color:var(--orange);margin-top:4px">4</p></div>
+    <div class="card" style="padding:12px;text-align:center"><p style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase">Modal</p><p style="font-size:20px;font-weight:800;color:var(--navy);margin-top:4px">3</p></div>
+  </div>
+  <div class="filter-bar">
+    <div class="search-input"><span>🔍</span><input placeholder="Cari kode atau nama akun..."></div>
+    <select class="filter-select"><option>Semua Tipe</option><option>Aset</option><option>Kewajiban</option><option>Modal</option><option>Pendapatan</option><option>Beban</option></select>
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option><option>Global</option></select>
+    <button class="btn btn-navy">+ Tambah Akun</button>
+    <div style="margin-left:auto;display:flex;gap:7px"><button class="btn btn-outline btn-sm">📊 Excel</button><button class="btn btn-navy btn-sm">📄 PDF</button></div>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table><thead><tr><th>Kode Akun</th><th>Nama Akun</th><th>Tipe</th><th>Unit Usaha</th><th>Saldo Normal</th><th>Saldo Saat Ini</th><th>Status</th><th>Aksi</th></tr></thead>
+      <tbody>
+        <tr><td style="font-family:monospace;font-weight:700">4-001</td><td>Pendapatan Jasa Proyek</td><td><span class="badge b-green">Pendapatan</span></td><td><span class="badge b-blue">Unit UMKM</span></td><td><span class="badge b-green">Kredit</span></td><td style="text-align:right;font-weight:600">Rp 78.500.000</td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td style="font-family:monospace;font-weight:700">4-002</td><td>Pendapatan Iuran Anggota</td><td><span class="badge b-green">Pendapatan</span></td><td><span class="badge b-gray">Pusat</span></td><td><span class="badge b-green">Kredit</span></td><td style="text-align:right;font-weight:600">Rp 32.000.000</td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td style="font-family:monospace;font-weight:700">4-003</td><td>Pendapatan Hasil Pertanian</td><td><span class="badge b-green">Pendapatan</span></td><td><span class="badge b-green">Pertanian</span></td><td><span class="badge b-green">Kredit</span></td><td style="text-align:right;font-weight:600">Rp 18.000.000</td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td style="font-family:monospace;font-weight:700">5-001</td><td>Beban Gaji &amp; Tunjangan</td><td><span class="badge b-red">Beban</span></td><td><span class="badge b-gray">Semua Unit</span></td><td><span class="badge b-orange">Debit</span></td><td style="text-align:right;font-weight:600">Rp 48.000.000</td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td style="font-family:monospace;font-weight:700">5-002</td><td>Beban Operasional Kantor</td><td><span class="badge b-red">Beban</span></td><td><span class="badge b-gray">Pusat</span></td><td><span class="badge b-orange">Debit</span></td><td style="text-align:right;font-weight:600">Rp 24.500.000</td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td style="font-family:monospace;font-weight:700">1-001</td><td>Kas &amp; Setara Kas</td><td><span class="badge b-blue">Aset</span></td><td><span class="badge b-gray">Global</span></td><td><span class="badge b-orange">Debit</span></td><td style="text-align:right;font-weight:600">Rp 55.500.000</td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td style="font-family:monospace;font-weight:700">2-001</td><td>Hutang Usaha</td><td><span class="badge b-orange">Kewajiban</span></td><td><span class="badge b-gray">Global</span></td><td><span class="badge b-green">Kredit</span></td><td style="text-align:right;font-weight:600">Rp 8.200.000</td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td style="font-family:monospace;font-weight:700">3-001</td><td>Modal Koperasi</td><td><span class="badge b-gray">Modal</span></td><td><span class="badge b-gray">Global</span></td><td><span class="badge b-green">Kredit</span></td><td style="text-align:right;font-weight:600">Rp 55.000.000</td><td><span class="badge b-green">Aktif</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+      </tbody></table>
+    </div>
+    <div class="pagination"><span>Menampilkan 1-8 dari 33 akun</span><div class="page-btns"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">›</button></div></div>
+  </div>
+</div>
+
+
+<div id="pg-lap-cashflow" class="page">
+  <div class="report-controls">
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select>
+    <div class="period-btns"><button class="period-btn">Harian</button><button class="period-btn">Mingguan</button><button class="period-btn active">Bulanan</button><button class="period-btn">Tahunan</button></div>
+    <select class="filter-select"><option>Juni 2026</option><option>Mei 2026</option><option>Apr 2026</option></select>
+    <select class="filter-select"><option>Semua Kategori</option><option>Operasional</option><option>Gaji</option><option>Proyek</option></select>
+    <div style="margin-left:auto;display:flex;gap:7px"><button class="btn btn-outline btn-sm">📊 Excel</button><button class="btn btn-navy btn-sm">📄 PDF</button></div>
+  </div>
+  <div class="stats-grid-3">
+    <div class="stat-card"><div class="stat-icon green">⬆️</div><div class="stat-info"><p>Rp 24,5 jt</p><span>Total Pemasukan</span><div class="stat-badge up">+12% vs Mei</div></div></div>
+    <div class="stat-card"><div class="stat-icon red">⬇️</div><div class="stat-info"><p>Rp 18,2 jt</p><span>Total Pengeluaran</span><div class="stat-badge down">+8% vs Mei</div></div></div>
+    <div class="stat-card"><div class="stat-icon blue">💰</div><div class="stat-info"><p>Rp 6,3 jt</p><span>Selisih Bersih</span><div class="stat-badge up">Surplus</div></div></div>
+  </div>
+  <div class="card" style="margin-bottom:14px"><div class="card-title"><span>📈</span>Arus Kas — Juni 2026</div><div id="chart-cashflow" style="min-height:240px"></div></div>
+  <div class="card">
+    <div class="card-title"><span>📋</span>Detail Transaksi Cashflow</div>
+    <div class="table-wrap">
+      <table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Unit Usaha</th><th>Kategori</th><th>Masuk</th><th>Keluar</th><th>Saldo</th></tr></thead>
+      <tbody>
+        <tr><td>10 Jun</td><td>Iuran Bulanan</td><td><span class="badge b-gray">Pusat</span></td><td>Operasional</td><td style="color:var(--green);font-weight:600">+Rp 5.000.000</td><td>—</td><td>Rp 48.500.000</td></tr>
+        <tr><td>9 Jun</td><td>Pembelian Bibit Padi</td><td><span class="badge b-green">Pertanian</span></td><td>Proyek</td><td>—</td><td style="color:var(--red);font-weight:600">-Rp 3.200.000</td><td>Rp 43.500.000</td></tr>
+        <tr><td>8 Jun</td><td>Jasa Konsultasi Digital</td><td><span class="badge b-orange">Digital</span></td><td>Proyek</td><td style="color:var(--green);font-weight:600">+Rp 4.800.000</td><td>—</td><td>Rp 46.700.000</td></tr>
+        <tr><td>7 Jun</td><td>Gaji Karyawan</td><td><span class="badge b-gray">Semua Unit</span></td><td>Gaji</td><td>—</td><td style="color:var(--red);font-weight:600">-Rp 9.800.000</td><td>Rp 41.900.000</td></tr>
+      </tbody></table>
+    </div>
+    <div class="pagination"><span>Menampilkan 1-4 dari 48 transaksi</span><div class="page-btns"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">›</button></div></div>
+  </div>
+</div>
+
+
+<div id="pg-lap-labaru" class="page">
+  <div class="report-controls">
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select>
+    <div class="period-btns"><button class="period-btn active">Bulanan</button><button class="period-btn">Tahunan</button></div>
+    <select class="filter-select"><option>Juni 2026</option><option>Mei 2026</option></select>
+    <div style="margin-left:auto;display:flex;gap:7px"><button class="btn btn-outline btn-sm">📊 Excel</button><button class="btn btn-navy btn-sm">📄 PDF</button></div>
+  </div>
+  <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px">
+    <div class="card">
+      <div class="card-title"><span>💹</span>Laporan Laba Rugi — Juni 2026 · Semua Unit</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Uraian</th><th>Kode</th><th style="text-align:right">Nominal (Rp)</th><th style="text-align:right">%</th></tr></thead>
+          <tbody>
+            <tr class="lr-section"><td colspan="4">PENDAPATAN</td></tr>
+            <tr><td class="lr-sub">Pendapatan Jasa Proyek</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">4-001</td><td style="text-align:right;color:var(--green);font-weight:600">78.500.000</td><td style="text-align:right">58%</td></tr>
+            <tr><td class="lr-sub">Pendapatan Iuran Anggota</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">4-002</td><td style="text-align:right;color:var(--green);font-weight:600">32.000.000</td><td style="text-align:right">24%</td></tr>
+            <tr><td class="lr-sub">Pendapatan Hasil Pertanian</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">4-003</td><td style="text-align:right;color:var(--green);font-weight:600">18.000.000</td><td style="text-align:right">13%</td></tr>
+            <tr><td class="lr-sub">Pendapatan Lain-lain</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">4-004</td><td style="text-align:right;color:var(--green);font-weight:600">5.000.000</td><td style="text-align:right">5%</td></tr>
+            <tr style="background:var(--green-light);font-weight:700"><td colspan="2" style="color:var(--green)">Total Pendapatan</td><td style="text-align:right;color:var(--green);font-size:14px">133.500.000</td><td style="text-align:right;color:var(--green)">100%</td></tr>
+            <tr><td colspan="4" style="padding:4px"></td></tr>
+            <tr style="background:var(--orange-light)"><td colspan="4" style="font-weight:700;color:var(--orange);padding:8px 12px">BEBAN OPERASIONAL</td></tr>
+            <tr><td class="lr-sub">Beban Gaji &amp; Tunjangan</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">5-001</td><td style="text-align:right;color:var(--red);font-weight:600">48.000.000</td><td style="text-align:right">50%</td></tr>
+            <tr><td class="lr-sub">Beban Operasional Kantor</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">5-002</td><td style="text-align:right;color:var(--red);font-weight:600">24.500.000</td><td style="text-align:right">25%</td></tr>
+            <tr><td class="lr-sub">Beban Proyek &amp; Kegiatan</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">5-003</td><td style="text-align:right;color:var(--red);font-weight:600">18.200.000</td><td style="text-align:right">19%</td></tr>
+            <tr><td class="lr-sub">Beban Penyusutan</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">5-004</td><td style="text-align:right;color:var(--red);font-weight:600">5.500.000</td><td style="text-align:right">6%</td></tr>
+            <tr style="background:#FEF2F2;font-weight:700"><td colspan="2" style="color:var(--red)">Total Beban</td><td style="text-align:right;color:var(--red);font-size:14px">96.200.000</td><td style="text-align:right;color:var(--red)">100%</td></tr>
+            <tr><td colspan="4" style="padding:4px"></td></tr>
+            <tr class="lr-total"><td colspan="2">LABA BERSIH</td><td style="text-align:right;color:#90EE90;font-size:18px">37.300.000</td><td style="text-align:right;color:#90EE90">27,9%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>🏭</span>Laba Rugi per Unit Usaha</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:var(--gray-50);border-radius:8px;padding:11px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><p style="font-size:12px;font-weight:600">Unit UMKM</p><span class="badge b-green">Laba</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500)"><span>Pendapatan</span><span style="color:var(--green);font-weight:600">Rp 54.200.000</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500)"><span>Beban</span><span style="color:var(--red);font-weight:600">Rp 38.100.000</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-top:5px;padding-top:5px;border-top:1px solid var(--gray-200)"><span>Laba Bersih</span><span style="color:var(--green)">Rp 16.100.000</span></div>
+        </div>
+        <div style="background:var(--gray-50);border-radius:8px;padding:11px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><p style="font-size:12px;font-weight:600">Unit Pertanian</p><span class="badge b-green">Laba</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500)"><span>Pendapatan</span><span style="color:var(--green);font-weight:600">Rp 38.000.000</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500)"><span>Beban</span><span style="color:var(--red);font-weight:600">Rp 29.500.000</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-top:5px;padding-top:5px;border-top:1px solid var(--gray-200)"><span>Laba Bersih</span><span style="color:var(--green)">Rp 8.500.000</span></div>
+        </div>
+        <div style="background:var(--gray-50);border-radius:8px;padding:11px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><p style="font-size:12px;font-weight:600">Unit Digital</p><span class="badge b-green">Laba</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500)"><span>Pendapatan</span><span style="color:var(--green);font-weight:600">Rp 28.500.000</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500)"><span>Beban</span><span style="color:var(--red);font-weight:600">Rp 21.800.000</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-top:5px;padding-top:5px;border-top:1px solid var(--gray-200)"><span>Laba Bersih</span><span style="color:var(--green)">Rp 6.700.000</span></div>
+        </div>
+        <div style="background:var(--gray-50);border-radius:8px;padding:11px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><p style="font-size:12px;font-weight:600">Pusat</p><span class="badge b-red">Rugi</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500)"><span>Pendapatan</span><span style="color:var(--green);font-weight:600">Rp 12.800.000</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500)"><span>Beban</span><span style="color:var(--red);font-weight:600">Rp 16.300.000</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-top:5px;padding-top:5px;border-top:1px solid var(--gray-200)"><span>Rugi Bersih</span><span style="color:var(--red)">(Rp 3.500.000)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-lap-neraca" class="page">
+  <div class="report-controls">
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select>
+    <select class="filter-select"><option>Per 10 Juni 2026</option><option>Per 31 Mei 2026</option><option>Per 31 Des 2025</option></select>
+    <div style="margin-left:auto;display:flex;gap:7px"><button class="btn btn-outline btn-sm">📊 Excel</button><button class="btn btn-navy btn-sm">📄 PDF</button></div>
+  </div>
+  <div class="neraca-grid">
+    <div class="card">
+      <div class="card-title"><span>💼</span>ASET</div>
+      <table><thead><tr><th>Uraian</th><th>Kode</th><th style="text-align:right">Nominal (Rp)</th></tr></thead>
+      <tbody>
+        <tr style="background:var(--blue-xlight)"><td colspan="3" style="font-weight:700;color:var(--navy);padding:8px 12px">ASET LANCAR</td></tr>
+        <tr><td class="lr-sub">Kas &amp; Setara Kas</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">1-001</td><td style="text-align:right;font-weight:600">55.500.000</td></tr>
+        <tr><td class="lr-sub">Piutang Usaha</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">1-002</td><td style="text-align:right;font-weight:600">12.300.000</td></tr>
+        <tr><td class="lr-sub">Persediaan</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">1-003</td><td style="text-align:right;font-weight:600">8.700.000</td></tr>
+        <tr style="background:var(--gray-50);font-weight:700"><td colspan="2">Total Aset Lancar</td><td style="text-align:right">76.500.000</td></tr>
+        <tr style="background:var(--blue-xlight)"><td colspan="3" style="font-weight:700;color:var(--navy);padding:8px 12px">ASET TETAP</td></tr>
+        <tr><td class="lr-sub">Peralatan Kantor</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">1-101</td><td style="text-align:right;font-weight:600">34.500.000</td></tr>
+        <tr><td class="lr-sub">Akumulasi Penyusutan</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">1-102</td><td style="text-align:right;font-weight:600;color:var(--red)">(5.500.000)</td></tr>
+        <tr style="background:var(--gray-50);font-weight:700"><td colspan="2">Total Aset Tetap</td><td style="text-align:right">29.000.000</td></tr>
+        <tr class="lr-total"><td colspan="2">TOTAL ASET</td><td style="text-align:right;color:#90EE90;font-size:15px">105.500.000</td></tr>
+      </tbody></table>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>⚖️</span>KEWAJIBAN &amp; MODAL</div>
+      <table><thead><tr><th>Uraian</th><th>Kode</th><th style="text-align:right">Nominal (Rp)</th></tr></thead>
+      <tbody>
+        <tr style="background:var(--orange-light)"><td colspan="3" style="font-weight:700;color:var(--orange);padding:8px 12px">KEWAJIBAN LANCAR</td></tr>
+        <tr><td class="lr-sub">Hutang Usaha</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">2-001</td><td style="text-align:right;font-weight:600">8.200.000</td></tr>
+        <tr><td class="lr-sub">Beban Masih Harus Dibayar</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">2-002</td><td style="text-align:right;font-weight:600">5.000.000</td></tr>
+        <tr style="background:var(--gray-50);font-weight:700"><td colspan="2">Total Kewajiban</td><td style="text-align:right">13.200.000</td></tr>
+        <tr style="background:var(--green-light)"><td colspan="3" style="font-weight:700;color:var(--green);padding:8px 12px">MODAL KOPERASI</td></tr>
+        <tr><td class="lr-sub">Modal Awal Koperasi</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">3-001</td><td style="text-align:right;font-weight:600">55.000.000</td></tr>
+        <tr><td class="lr-sub">Laba Ditahan</td><td style="font-family:monospace;font-size:11px;color:var(--gray-400)">3-002</td><td style="text-align:right;font-weight:600">37.300.000</td></tr>
+        <tr style="background:var(--gray-50);font-weight:700"><td colspan="2">Total Modal</td><td style="text-align:right">92.300.000</td></tr>
+        <tr class="lr-total"><td colspan="2">TOTAL KEWAJIBAN + MODAL</td><td style="text-align:right;color:#90EE90;font-size:15px">105.500.000</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px">
+    <div class="stat-card" style="background:var(--blue-xlight);border:1px solid var(--blue-light)"><div class="stat-icon blue">💼</div><div class="stat-info"><p style="color:var(--navy)">Rp 105,5 jt</p><span>Total Aset</span></div></div>
+    <div class="stat-card" style="background:var(--orange-light);border:1px solid var(--orange)"><div class="stat-icon orange">📋</div><div class="stat-info"><p style="color:var(--orange)">Rp 13,2 jt</p><span>Total Kewajiban</span></div></div>
+    <div class="stat-card" style="background:var(--green-light);border:1px solid var(--green)"><div class="stat-icon green">💰</div><div class="stat-info"><p style="color:var(--green)">Rp 92,3 jt</p><span>Total Modal</span></div></div>
+  </div>
+</div>
+
+
+<div id="pg-lap-kategori" class="page">
+  <div class="report-controls">
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select>
+    <div class="period-btns"><button class="period-btn">Jan</button><button class="period-btn">Feb</button><button class="period-btn">Mar</button><button class="period-btn">Apr</button><button class="period-btn">Mei</button><button class="period-btn active">Jun</button></div>
+    <select class="filter-select"><option>2026</option><option>2025</option></select>
+    <div style="margin-left:auto;display:flex;gap:7px"><button class="btn btn-outline btn-sm">📊 Excel</button><button class="btn btn-navy btn-sm">📄 PDF</button></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+    <div class="card"><div class="card-title"><span>📊</span>Grafik Pemasukan per Kategori</div><div id="chart-kat-masuk" style="min-height:200px"></div></div>
+    <div class="card"><div class="card-title"><span>📊</span>Grafik Pengeluaran per Kategori</div><div id="chart-kat-keluar" style="min-height:200px"></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span>🏷️</span>Rincian per Kategori — Juni 2026</div>
+    <div class="table-wrap">
+      <table><thead><tr><th>Kategori</th><th>Jenis</th><th>Unit Usaha</th><th>Jml Transaksi</th><th>Total Nominal</th><th>% dari Total</th><th>Rata-rata</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-orange">Proyek</span></td><td>Pemasukan</td><td><span class="badge b-blue">UMKM</span></td><td>8</td><td style="font-weight:600;color:var(--green)">Rp 12.500.000</td><td>51%</td><td>Rp 1.562.500</td></tr>
+        <tr><td><span class="badge b-blue">Operasional</span></td><td>Pemasukan</td><td><span class="badge b-gray">Pusat</span></td><td>5</td><td style="font-weight:600;color:var(--green)">Rp 7.200.000</td><td>29%</td><td>Rp 1.440.000</td></tr>
+        <tr><td><span class="badge b-orange">Gaji</span></td><td>Pengeluaran</td><td><span class="badge b-gray">Semua</span></td><td>12</td><td style="font-weight:600;color:var(--red)">Rp 9.800.000</td><td>54%</td><td>Rp 816.667</td></tr>
+        <tr><td><span class="badge b-gray">Operasional</span></td><td>Pengeluaran</td><td><span class="badge b-gray">Pusat</span></td><td>9</td><td style="font-weight:600;color:var(--red)">Rp 5.400.000</td><td>30%</td><td>Rp 600.000</td></tr>
+      </tbody></table>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-100)">
+      <div style="background:var(--green-light);border-radius:8px;padding:11px;text-align:center"><p style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase">Total Pemasukan</p><p style="font-size:18px;font-weight:800;color:var(--green);margin-top:4px">Rp 24,5 jt</p></div>
+      <div style="background:#FEF2F2;border-radius:8px;padding:11px;text-align:center"><p style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase">Total Pengeluaran</p><p style="font-size:18px;font-weight:800;color:var(--red);margin-top:4px">Rp 18,2 jt</p></div>
+      <div style="background:var(--blue-xlight);border-radius:8px;padding:11px;text-align:center"><p style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase">Selisih Bersih</p><p style="font-size:18px;font-weight:800;color:var(--navy);margin-top:4px">Rp 6,3 jt</p></div>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-lap-tahunan" class="page">
+  <div class="report-controls">
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select>
+    <div class="period-btns"><button class="period-btn">2024</button><button class="period-btn">2025</button><button class="period-btn active">2026</button></div>
+    <div style="margin-left:auto;display:flex;gap:7px"><button class="btn btn-outline btn-sm">📊 Excel</button><button class="btn btn-navy btn-sm">📄 PDF</button></div>
+  </div>
+  <div class="stats-grid-4">
+    <div class="stat-card"><div class="stat-icon green">💰</div><div class="stat-info"><p>Rp 133,5 jt</p><span>Total Pemasukan 2026</span><div class="stat-badge up">↑18% vs 2025</div></div></div>
+    <div class="stat-card"><div class="stat-icon red">💸</div><div class="stat-info"><p>Rp 96,2 jt</p><span>Total Pengeluaran 2026</span><div class="stat-badge down">↑12% vs 2025</div></div></div>
+    <div class="stat-card"><div class="stat-icon blue">📊</div><div class="stat-info"><p>Rp 37,3 jt</p><span>Selisih Bersih 2026</span><div class="stat-badge up">↑31% vs 2025</div></div></div>
+    <div class="stat-card"><div class="stat-icon orange">📈</div><div class="stat-info"><p>Rp 55,5 jt</p><span>Saldo Akhir</span><div class="stat-badge up">Per Jun 2026</div></div></div>
+  </div>
+  <div class="card" style="margin-bottom:14px"><div class="card-title"><span>📊</span>Perbandingan Pemasukan &amp; Pengeluaran 2026</div><div id="chart-tahunan" style="min-height:250px"></div></div>
+  <div class="card">
+    <div class="card-title"><span>📋</span>Rekap Bulanan 2026</div>
+    <div class="table-wrap">
+      <table><thead><tr><th>Bulan</th><th>Pemasukan</th><th>Pengeluaran</th><th>Selisih</th><th>Saldo Akhir</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600">Januari 2026</td><td style="color:var(--green);font-weight:600">Rp 19.000.000</td><td style="color:var(--red)">Rp 7.000.000</td><td style="color:var(--green);font-weight:700">+Rp 12.000.000</td><td style="font-weight:600">Rp 19.000.000</td><td><span class="badge b-green">Surplus</span></td></tr>
+        <tr><td style="font-weight:600">Februari 2026</td><td style="color:var(--green);font-weight:600">Rp 18.700.000</td><td style="color:var(--red)">Rp 8.400.000</td><td style="color:var(--green);font-weight:700">+Rp 10.300.000</td><td style="font-weight:600">Rp 29.300.000</td><td><span class="badge b-green">Surplus</span></td></tr>
+        <tr><td style="font-weight:600">Maret 2026</td><td style="color:var(--green);font-weight:600">Rp 19.800.000</td><td style="color:var(--red)">Rp 12.200.000</td><td style="color:var(--green);font-weight:700">+Rp 7.600.000</td><td style="font-weight:600">Rp 36.900.000</td><td><span class="badge b-green">Surplus</span></td></tr>
+        <tr><td style="font-weight:600">April 2026</td><td style="color:var(--green);font-weight:600">Rp 20.500.000</td><td style="color:var(--red)">Rp 14.800.000</td><td style="color:var(--green);font-weight:700">+Rp 5.700.000</td><td style="font-weight:600">Rp 42.600.000</td><td><span class="badge b-green">Surplus</span></td></tr>
+        <tr><td style="font-weight:600">Mei 2026</td><td style="color:var(--green);font-weight:600">Rp 22.000.000</td><td style="color:var(--red)">Rp 15.400.000</td><td style="color:var(--green);font-weight:700">+Rp 6.600.000</td><td style="font-weight:600">Rp 49.200.000</td><td><span class="badge b-green">Surplus</span></td></tr>
+        <tr style="background:var(--blue-xlight)"><td style="font-weight:700;color:var(--navy)">Juni 2026 (berjalan)</td><td style="color:var(--green);font-weight:600">Rp 24.500.000</td><td style="color:var(--red)">Rp 18.200.000</td><td style="color:var(--green);font-weight:700">+Rp 6.300.000</td><td style="font-weight:700;color:var(--navy)">Rp 55.500.000</td><td><span class="badge b-blue">Berjalan</span></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-lap-grafik" class="page">
+  <div class="report-controls">
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select>
+    <div class="period-btns"><button class="period-btn">3 Bulan</button><button class="period-btn active">6 Bulan</button><button class="period-btn">1 Tahun</button></div>
+  </div>
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px">
+    <div class="card"><div class="card-title"><span>📈</span>Trend Keuangan Bulanan</div><div id="chart-trend" style="min-height:240px"></div></div>
+    <div class="card"><div class="card-title"><span>🥧</span>Distribusi Pengeluaran</div><div id="chart-pie" style="min-height:240px"></div></div>
+  </div>
+  <div class="card"><div class="card-title"><span>📊</span>Perbandingan per Kategori</div><div id="chart-bar" style="min-height:240px"></div></div>
+</div>
+
+
+<div id="pg-user-list" class="page">
+  <div class="filter-bar">
+    <div class="search-input"><span>🔍</span><input placeholder="Cari user..."></div>
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select>
+    <select class="filter-select"><option>Semua Role</option><option>Super Admin</option><option>Pengurus Pusat</option><option>Kepala Divisi</option><option>Manager Unit</option><option>Staff</option><option>Anggota</option></select>
+    <select class="filter-select"><option>Semua Status</option><option>Aktif</option><option>Nonaktif</option></select>
+    <button class="btn btn-navy">+ Tambah User</button>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table><thead><tr><th>Nama</th><th>Email</th><th>Role</th><th>Unit Usaha</th><th>Status</th><th>Login Terakhir</th><th>Aksi</th></tr></thead>
+      <tbody>
+        <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="user-av" style="width:28px;height:28px;font-size:10px">RA</div><div><p style="font-weight:600;font-size:12px">Robertus Adi Setyadharma</p><p style="font-size:11px;color:var(--gray-400)">admin@kmpbbs.id</p></div></div></td><td style="font-size:12px">admin@kmpbbs.id</td><td><span class="badge b-navy">Super Admin</span></td><td><span class="badge b-gray">Semua Unit</span></td><td><span class="badge b-green">Aktif</span></td><td style="font-size:12px">Hari ini 09:15</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon" disabled style="opacity:.4">🗑️</button></div></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="user-av" style="width:28px;height:28px;font-size:10px;background:var(--green)">IW</div><div><p style="font-weight:600;font-size:12px">I Wayan Karma</p><p style="font-size:11px;color:var(--gray-400)">wayan@kmpbbs.id</p></div></div></td><td style="font-size:12px">wayan@kmpbbs.id</td><td><span class="badge b-blue">Manager Unit</span></td><td><span class="badge b-green">Unit Pertanian</span></td><td><span class="badge b-green">Aktif</span></td><td style="font-size:12px">Hari ini 08:42</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="user-av" style="width:28px;height:28px;font-size:10px;background:var(--orange)">NM</div><div><p style="font-weight:600;font-size:12px">Ni Made Sari</p><p style="font-size:11px;color:var(--gray-400)">made@kmpbbs.id</p></div></div></td><td style="font-size:12px">made@kmpbbs.id</td><td><span class="badge b-blue">Manager Unit</span></td><td><span class="badge b-blue">Unit UMKM</span></td><td><span class="badge b-green">Aktif</span></td><td style="font-size:12px">Kemarin 16:30</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="user-av" style="width:28px;height:28px;font-size:10px;background:var(--red)">KS</div><div><p style="font-weight:600;font-size:12px">Ketut Suartha</p><p style="font-size:11px;color:var(--gray-400)">ketut@kmpbbs.id</p></div></div></td><td style="font-size:12px">ketut@kmpbbs.id</td><td><span class="badge b-gray">Staff</span></td><td><span class="badge b-orange">Unit Digital</span></td><td><span class="badge b-gray">Nonaktif</span></td><td style="font-size:12px">3 hari lalu</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+      </tbody></table>
+    </div>
+    <div class="pagination"><span>Menampilkan 1-4 dari 18 user</span><div class="page-btns"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">›</button></div></div>
+  </div>
+</div>
+
+
+<div id="pg-profil-user" class="page">
+  <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px">
+    <div class="card" style="height:fit-content;text-align:center">
+      <div style="width:72px;height:72px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:white;margin:0 auto 12px">RA</div>
+      <p style="font-size:15px;font-weight:700">Robertus Adi Setyadharma</p>
+      <p style="font-size:12px;color:var(--gray-400);margin-top:3px">admin@kmpbbs.id</p>
+      <span class="badge b-navy" style="margin-top:10px;display:inline-flex">Super Admin</span>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--gray-100);text-align:left">
+        <p style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:10px">Info Akun</p>
+        <div style="display:flex;flex-direction:column;gap:7px;font-size:12px">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--gray-400)">Unit Usaha</span><span class="badge b-gray">Semua Unit</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--gray-400)">Status</span><span class="badge b-green">Aktif</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--gray-400)">Login Terakhir</span><strong>Hari ini 09:15</strong></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--gray-400)">Bergabung</span><strong>Jan 2024</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="tabs" id="profil-tabs">
+        <div class="tab active" onclick="switchTab('profil-tabs','profil-panels',0)">✏️ Edit Profil</div>
+        <div class="tab" onclick="switchTab('profil-tabs','profil-panels',1)">🔑 Ganti Password</div>
+      </div>
+      <div id="profil-panels">
+        <div class="panel-item">
+          <div class="form-grid">
+            <div class="form-field form-full"><label>Nama Lengkap *</label><input type="text" value="Robertus Adi Setyadharma"></div>
+            <div class="form-field"><label>Email *</label><input type="email" value="admin@kmpbbs.id"></div>
+            <div class="form-field"><label>No. Telepon</label><input type="text" value="+62 812 0000 0000"></div>
+            <div class="form-field form-full"><label>Foto Profil</label><div class="upload-zone" style="padding:12px;display:flex;align-items:center;gap:12px;text-align:left"><div style="width:38px;height:38px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:12px;flex-shrink:0">RA</div><p>Upload foto baru (JPG, PNG — maks 2MB)</p></div></div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:16px"><button class="btn btn-outline">Reset</button><button class="btn btn-navy">💾 Simpan Profil</button></div>
+        </div>
+        <div class="panel-item" style="display:none">
+          <div class="form-grid">
+            <div class="form-field form-full"><label>Password Saat Ini *</label><input type="password" placeholder="Masukkan password lama"></div>
+            <div class="form-field"><label>Password Baru *</label><input type="password" placeholder="Min. 8 karakter"></div>
+            <div class="form-field"><label>Konfirmasi Password Baru *</label><input type="password" placeholder="Ulangi password baru"></div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:16px"><button class="btn btn-outline">Batal</button><button class="btn btn-navy">🔑 Ganti Password</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-notif-center" class="page">
+  <div class="filter-bar">
+    <select class="filter-select"><option>Semua Tipe</option><option>Dokumen Expired</option><option>Approval Pending</option><option>Sistem</option></select>
+    <select class="filter-select"><option>Semua Status</option><option>Belum Dibaca</option><option>Sudah Dibaca</option></select>
+    <select class="filter-select"><option>Semua Unit</option><option>Global</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option></select>
+    <button class="btn btn-outline" style="margin-left:auto">✓ Tandai Semua Dibaca</button>
+  </div>
+  <div class="card">
+    <div style="display:flex;flex-direction:column">
+      <div style="padding:14px;border-bottom:1px solid var(--gray-100);background:var(--blue-xlight);display:flex;gap:10px">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--red);margin-top:4px;flex-shrink:0"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between"><p style="font-size:13px;font-weight:600">Kontrak Sewa Kantor akan expired dalam 14 hari</p><span style="font-size:11px;color:var(--gray-400)">1 jam lalu</span></div>
+          <div style="margin-top:4px;display:flex;gap:6px"><span class="unit-tag">Global</span><span class="badge b-red" style="font-size:10px">Dokumen Expired</span></div>
+          <p style="font-size:12px;color:var(--gray-500);margin-top:4px">Segera perbarui atau perpanjang kontrak sebelum expired</p>
+        </div>
+      </div>
+      <div style="padding:14px;border-bottom:1px solid var(--gray-100);background:var(--blue-xlight);display:flex;gap:10px">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--orange);margin-top:4px;flex-shrink:0"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between"><p style="font-size:13px;font-weight:600">Transaksi Rp 15.000.000 menunggu approval Anda</p><span style="font-size:11px;color:var(--gray-400)">3 jam lalu</span></div>
+          <div style="margin-top:4px;display:flex;gap:6px"><span class="unit-tag">Unit UMKM</span><span class="badge b-orange" style="font-size:10px">Approval Pending</span></div>
+          <p style="font-size:12px;color:var(--gray-500);margin-top:4px">Diajukan oleh Ni Made Sari — Biaya proyek digitalisasi UMKM Batch 3</p>
+        </div>
+      </div>
+      <div style="padding:14px;border-bottom:1px solid var(--gray-100);background:var(--blue-xlight);display:flex;gap:10px">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--orange);margin-top:4px;flex-shrink:0"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between"><p style="font-size:13px;font-weight:600">Transaksi Rp 25.000.000 menunggu approval Anda</p><span style="font-size:11px;color:var(--gray-400)">5 jam lalu</span></div>
+          <div style="margin-top:4px;display:flex;gap:6px"><span class="unit-tag">Unit Pertanian</span><span class="badge b-orange" style="font-size:10px">Approval Pending</span></div>
+          <p style="font-size:12px;color:var(--gray-500);margin-top:4px">Diajukan oleh Ketut Suartha — Investasi alat produksi divisi pertanian</p>
+        </div>
+      </div>
+      <div style="padding:14px;border-bottom:1px solid var(--gray-100);display:flex;gap:10px">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--gray-300);margin-top:4px;flex-shrink:0"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between"><p style="font-size:13px;color:var(--gray-700)">MOU Supplier Alat Tulis akan expired dalam 22 hari</p><span style="font-size:11px;color:var(--gray-400)">1 hari lalu</span></div>
+          <div style="margin-top:4px;display:flex;gap:6px"><span class="unit-tag">Unit UMKM</span><span class="badge b-orange" style="font-size:10px">Dokumen Expired</span></div>
+        </div>
+      </div>
+      <div style="padding:14px;display:flex;gap:10px">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--gray-300);margin-top:4px;flex-shrink:0"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between"><p style="font-size:13px;color:var(--gray-700)">Backup otomatis harian berhasil — 284 record tersimpan</p><span style="font-size:11px;color:var(--gray-400)">1 hari lalu</span></div>
+          <div style="margin-top:4px"><span class="badge b-blue" style="font-size:10px">Sistem</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination"><span>Menampilkan 1-5 dari 12 notifikasi</span><div class="page-btns"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">›</button></div></div>
+  </div>
+</div>
+
+
+<div id="pg-pengaturan" class="page">
+  <div class="tabs" id="setting-tabs">
+    <div class="tab active" onclick="switchTab('setting-tabs','setting-panels',0)">🏢 Profil Koperasi</div>
+    <div class="tab" onclick="switchTab('setting-tabs','setting-panels',1)">🏭 Unit Usaha</div>
+    <div class="tab" onclick="switchTab('setting-tabs','setting-panels',2)">📂 Kategori</div>
+    <div class="tab" onclick="switchTab('setting-tabs','setting-panels',3)">🔔 Notifikasi</div>
+    <div class="tab" onclick="switchTab('setting-tabs','setting-panels',4)">🖥️ Log Sistem</div>
+  </div>
+  <div id="setting-panels">
+    <!-- Tab 0: Profil Koperasi -->
+    <div class="panel-item">
+      <div class="card" style="max-width:640px">
+        <div class="form-grid">
+          <div class="form-field form-full"><label>Logo Koperasi</label><div class="upload-zone" style="padding:12px;display:flex;align-items:center;gap:12px;text-align:left"><div style="width:52px;height:52px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white">KMP</div><p>Upload logo baru (PNG, JPG — maks 2MB)</p></div></div>
+          <div class="form-field form-full"><label>Nama Koperasi *</label><input type="text" value="Koperasi Jasa Multi Pihak Bali Bangkit Sejahtera"></div>
+          <div class="form-field"><label>Singkatan</label><input type="text" value="KMP BBS"></div>
+          <div class="form-field"><label>Nomor Badan Hukum</label><input type="text" placeholder="Nomor badan hukum koperasi"></div>
+          <div class="form-field form-full"><label>Alamat</label><textarea>Jl. Raya Puputan No. 12, Renon, Denpasar, Bali 80226</textarea></div>
+          <div class="form-field"><label>Telepon</label><input type="text" value="+62 361 000 0000"></div>
+          <div class="form-field"><label>Email</label><input type="email" value="info@kmpbbs.id"></div>
+          <div class="form-field"><label>Website</label><input type="text" value="www.kmpbbs.id"></div>
+          <div class="form-field form-full"><label>Threshold Approval (Rp)</label><input type="number" value="5000000"><p class="field-hint">Transaksi di atas nominal ini wajib approval Pengurus Pusat</p></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:16px"><button class="btn btn-outline">Reset</button><button class="btn btn-navy">💾 Simpan</button></div>
+      </div>
+    </div>
+    <!-- Tab 1: Unit Usaha -->
+    <div class="panel-item" style="display:none">
+      <div class="filter-bar"><div class="search-input"><span>🔍</span><input placeholder="Cari unit usaha..."></div><button class="btn btn-navy" style="margin-left:auto">+ Tambah Unit Usaha</button></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table><thead><tr><th>Kode Unit</th><th>Nama Unit Usaha</th><th>Deskripsi</th><th>Status</th><th style="text-align:right">Saldo</th><th style="text-align:center">Jml User</th><th>Aksi</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:700;font-family:monospace">U001</td><td style="font-weight:600">Unit Pertanian</td><td style="font-size:12px;color:var(--gray-500)">Pertanian organik &amp; agrikultur</td><td><span class="badge b-green">Aktif</span></td><td style="font-weight:600;text-align:right">Rp 18.500.000</td><td style="text-align:center">4</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:700;font-family:monospace">U002</td><td style="font-weight:600">Unit UMKM</td><td style="font-size:12px;color:var(--gray-500)">Pengembangan &amp; pendampingan UMKM</td><td><span class="badge b-green">Aktif</span></td><td style="font-weight:600;text-align:right">Rp 14.200.000</td><td style="text-align:center">5</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:700;font-family:monospace">U003</td><td style="font-weight:600">Unit Digital</td><td style="font-size:12px;color:var(--gray-500)">Jasa teknologi &amp; digital marketing</td><td><span class="badge b-green">Aktif</span></td><td style="font-weight:600;text-align:right">Rp 10.100.000</td><td style="text-align:center">3</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:700;font-family:monospace">P000</td><td style="font-weight:600">Pusat</td><td style="font-size:12px;color:var(--gray-500)">Operasional &amp; administrasi koperasi</td><td><span class="badge b-green">Aktif</span></td><td style="font-weight:600;text-align:right">Rp 5.700.000</td><td style="text-align:center">6</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon" disabled style="opacity:.4">🗑️</button></div></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+    <!-- Tab 2: Kategori -->
+    <div class="panel-item" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div class="card-title" style="margin-bottom:0"><span>📁</span>Kategori Dokumen</div><button class="btn btn-navy btn-sm">+ Tambah</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Nama Kategori</th><th style="text-align:center">Jml Dok.</th><th>Aksi</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">MOU</td><td style="text-align:center"><span class="badge b-blue">12</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:600">Akta</td><td style="text-align:center"><span class="badge b-blue">3</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:600">Kontrak</td><td style="text-align:center"><span class="badge b-blue">8</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:600">SK</td><td style="text-align:center"><span class="badge b-blue">5</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:600">SOP</td><td style="text-align:center"><span class="badge b-blue">9</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:600">Lainnya</td><td style="text-align:center"><span class="badge b-gray">7</span></td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon" disabled style="opacity:.4">🗑️</button></div></td></tr>
+          </tbody></table></div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div class="card-title" style="margin-bottom:0"><span>💳</span>Kategori Transaksi</div><button class="btn btn-navy btn-sm">+ Tambah</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Nama Kategori</th><th>Tipe</th><th style="text-align:center">Jml Trx</th><th>Aksi</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Operasional</td><td><span class="badge b-gray">Keduanya</span></td><td style="text-align:center">34</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:600">Gaji</td><td><span class="badge b-red">Pengeluaran</span></td><td style="text-align:center">18</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:600">Proyek</td><td><span class="badge b-gray">Keduanya</span></td><td style="text-align:center">22</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+            <tr><td style="font-weight:600">Investasi</td><td><span class="badge b-gray">Keduanya</span></td><td style="text-align:center">8</td><td><div style="display:flex;gap:3px"><button class="btn btn-outline btn-sm btn-icon">✏️</button><button class="btn btn-outline btn-sm btn-icon">🗑️</button></div></td></tr>
+          </tbody></table></div>
+        </div>
+      </div>
+    </div>
+    <!-- Tab 3: Notifikasi -->
+    <div class="panel-item" style="display:none">
+      <div class="card" style="max-width:560px">
+        <div class="toggle-row"><div class="toggle-label"><p>Email Notifikasi Aktif</p><span>Kirim semua notifikasi via email</span></div><div class="toggle"></div></div>
+        <div class="form-field" style="margin:14px 0"><label>Email Tujuan Notifikasi</label><input type="email" value="admin@kmpbbs.id"></div>
+        <p style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--gray-700)">Reminder Dokumen Expired</p>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px">
+          <label style="display:flex;align-items:center;gap:9px;font-size:13px;cursor:pointer"><input type="checkbox" checked> Kirim reminder H-30 sebelum expired</label>
+          <label style="display:flex;align-items:center;gap:9px;font-size:13px;cursor:pointer"><input type="checkbox" checked> Kirim reminder H-14 sebelum expired</label>
+          <label style="display:flex;align-items:center;gap:9px;font-size:13px;cursor:pointer"><input type="checkbox" checked> Kirim reminder H-7 sebelum expired</label>
+        </div>
+        <p style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--gray-700)">Notifikasi Approval</p>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px">
+          <label style="display:flex;align-items:center;gap:9px;font-size:13px;cursor:pointer"><input type="checkbox" checked> Notifikasi saat transaksi perlu approval</label>
+          <label style="display:flex;align-items:center;gap:9px;font-size:13px;cursor:pointer"><input type="checkbox" checked> Notifikasi saat approval disetujui/ditolak</label>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:9px"><button class="btn btn-outline">Reset</button><button class="btn btn-navy">💾 Simpan Pengaturan</button></div>
+      </div>
+    </div>
+    <!-- Tab 4: Log Sistem -->
+    <div class="panel-item" style="display:none">
+      <div class="filter-bar">
+        <select class="filter-select"><option>Semua Tipe</option><option>Error</option><option>Warning</option><option>Info</option><option>Login Gagal</option></select>
+        <input type="date" class="filter-select" value="2026-06-10">
+        <button class="btn btn-outline" style="margin-left:auto">📊 Export Log</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table><thead><tr><th>Waktu</th><th>Tipe</th><th>Sumber</th><th>Unit Usaha</th><th>Pesan</th></tr></thead>
+          <tbody>
+            <tr><td style="font-size:12px;font-family:monospace;white-space:nowrap">10 Jun 09:15</td><td><span class="badge b-blue">Info</span></td><td style="font-size:12px">Auth</td><td><span class="badge b-gray" style="font-size:10px">Global</span></td><td style="font-size:12px">User admin@kmpbbs.id berhasil login</td></tr>
+            <tr><td style="font-size:12px;font-family:monospace;white-space:nowrap">10 Jun 08:42</td><td><span class="badge b-blue">Info</span></td><td style="font-size:12px">Dokumen</td><td><span class="badge b-blue" style="font-size:10px">UMKM</span></td><td style="font-size:12px">File MOU_PT_Sinar_Bali_v2.pdf berhasil diupload (1.8MB)</td></tr>
+            <tr><td style="font-size:12px;font-family:monospace;white-space:nowrap">9 Jun 16:22</td><td><span class="badge b-orange">Warning</span></td><td style="font-size:12px">Dokumen</td><td><span class="badge b-orange" style="font-size:10px">Digital</span></td><td style="font-size:12px">Kontrak Sewa Kantor akan expired dalam 14 hari</td></tr>
+            <tr><td style="font-size:12px;font-family:monospace;white-space:nowrap">9 Jun 14:05</td><td><span class="badge b-red">Error</span></td><td style="font-size:12px">Auth</td><td><span class="badge b-gray" style="font-size:10px">Global</span></td><td style="font-size:12px">3x login gagal dari IP 103.28.xx.xx — akun dikunci 15 menit</td></tr>
+            <tr><td style="font-size:12px;font-family:monospace;white-space:nowrap">9 Jun 12:30</td><td><span class="badge b-blue">Info</span></td><td style="font-size:12px">Backup</td><td><span class="badge b-gray" style="font-size:10px">Global</span></td><td style="font-size:12px">Backup otomatis harian berhasil — 284 record tersimpan</td></tr>
+          </tbody></table>
+        </div>
+        <div class="pagination"><span>Menampilkan 1-5 dari 412 log</span><div class="page-btns"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">›</button></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-log-aktivitas" class="page">
+  <div class="filter-bar">
+    <div class="search-input"><span>🔍</span><input placeholder="Cari aktivitas..."></div>
+    <select class="filter-select"><option>Semua Unit Usaha</option><option>Unit Pertanian</option><option>Unit UMKM</option><option>Unit Digital</option><option>Pusat</option></select>
+    <select class="filter-select"><option>Semua Tipe</option><option>Login</option><option>Upload Dokumen</option><option>Input Transaksi</option><option>Edit</option><option>Hapus</option><option>Download</option><option>Approval</option></select>
+    <select class="filter-select"><option>Semua User</option><option>Robertus Adi</option><option>I Wayan Karma</option><option>Ni Made Sari</option></select>
+    <input type="date" class="filter-select" value="2026-06-01">
+    <input type="date" class="filter-select" value="2026-06-10">
+    <button class="btn btn-outline" style="margin-left:auto">📊 Export</button>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table><thead><tr><th>Waktu</th><th>User</th><th>Tipe Aktivitas</th><th>Unit Usaha</th><th>Detail</th><th>IP Address</th></tr></thead>
+      <tbody>
+        <tr><td style="font-size:12px;white-space:nowrap">10 Jun 09:15</td><td><div style="display:flex;align-items:center;gap:6px"><div class="user-av" style="width:22px;height:22px;font-size:9px">RA</div><span style="font-size:12px;font-weight:600">Robertus Adi</span></div></td><td><span class="badge b-blue">Login</span></td><td><span class="badge b-gray" style="font-size:10px">Global</span></td><td style="font-size:12px">Login berhasil — Super Admin</td><td style="font-size:11px;font-family:monospace;color:var(--gray-400)">180.244.xx.xx</td></tr>
+        <tr><td style="font-size:12px;white-space:nowrap">10 Jun 08:42</td><td><div style="display:flex;align-items:center;gap:6px"><div class="user-av" style="width:22px;height:22px;font-size:9px;background:var(--green)">IW</div><span style="font-size:12px;font-weight:600">I Wayan Karma</span></div></td><td><span class="badge b-orange">Upload Dok.</span></td><td><span class="badge b-blue" style="font-size:10px">UMKM</span></td><td style="font-size:12px">Upload MOU_PT_Sinar_Bali_v2.pdf (1.8MB)</td><td style="font-size:11px;font-family:monospace;color:var(--gray-400)">114.5.xx.xx</td></tr>
+        <tr><td style="font-size:12px;white-space:nowrap">9 Jun 16:10</td><td><div style="display:flex;align-items:center;gap:6px"><div class="user-av" style="width:22px;height:22px;font-size:9px;background:var(--orange)">NM</div><span style="font-size:12px;font-weight:600">Ni Made Sari</span></div></td><td><span class="badge b-green">Input Transaksi</span></td><td><span class="badge b-blue" style="font-size:10px">UMKM</span></td><td style="font-size:12px">Input transaksi keluar Rp 15.000.000 — Proyek</td><td style="font-size:11px;font-family:monospace;color:var(--gray-400)">180.244.xx.xx</td></tr>
+        <tr><td style="font-size:12px;white-space:nowrap">9 Jun 14:30</td><td><div style="display:flex;align-items:center;gap:6px"><div class="user-av" style="width:22px;height:22px;font-size:9px">RA</div><span style="font-size:12px;font-weight:600">Robertus Adi</span></div></td><td><span class="badge b-navy">Approval</span></td><td><span class="badge b-green" style="font-size:10px">Pertanian</span></td><td style="font-size:12px">Menyetujui transaksi Rp 6.200.000 dari I Wayan Karma</td><td style="font-size:11px;font-family:monospace;color:var(--gray-400)">180.244.xx.xx</td></tr>
+        <tr><td style="font-size:12px;white-space:nowrap">8 Jun 11:20</td><td><div style="display:flex;align-items:center;gap:6px"><div class="user-av" style="width:22px;height:22px;font-size:9px;background:var(--green)">IW</div><span style="font-size:12px;font-weight:600">I Wayan Karma</span></div></td><td><span class="badge b-blue">Download</span></td><td><span class="badge b-green" style="font-size:10px">Pertanian</span></td><td style="font-size:12px">Download SOP_Pengelolaan_Lahan.pdf</td><td style="font-size:11px;font-family:monospace;color:var(--gray-400)">114.5.xx.xx</td></tr>
+      </tbody></table>
+    </div>
+    <div class="pagination"><span>Menampilkan 1-5 dari 284 aktivitas</span><div class="page-btns"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">›</button></div></div>
+  </div>
+</div>
+
+
+    </div><!-- end content -->
+  </div><!-- end main -->
+</div><!-- end app -->
+
+
+<div class="notif-panel" id="notif-panel">
+  <div class="notif-header">
+    <h4>🔔 Notifikasi</h4>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button style="background:none;border:none;font-size:11px;color:var(--blue);cursor:pointer" onclick="go('notif-center')">Lihat Semua</button>
+      <button onclick="toggleNotif()" style="background:none;border:none;cursor:pointer;color:var(--gray-400)">✕</button>
+    </div>
+  </div>
+  <div class="notif-list">
+    <div class="notif-item"><div class="dot" style="background:var(--red)"></div><div><p>Kontrak Sewa Kantor expired 14 hari lagi</p><span class="unit-tag">Global</span><br><span>1 jam lalu</span></div></div>
+    <div class="notif-item"><div class="dot" style="background:var(--orange)"></div><div><p>Transaksi Rp 15 jt menunggu approval</p><span class="unit-tag">Unit UMKM</span><br><span>3 jam lalu</span></div></div>
+    <div class="notif-item"><div class="dot" style="background:var(--orange)"></div><div><p>Transaksi Rp 25 jt menunggu approval</p><span class="unit-tag">Unit Pertanian</span><br><span>5 jam lalu</span></div></div>
+    <div class="notif-item"><div class="dot" style="background:var(--gray-300)"></div><div><p>MOU Supplier expired 22 hari lagi</p><span class="unit-tag">Unit UMKM</span><br><span>1 hari lalu</span></div></div>
+  </div>
+</div>
+
+<div class="fo-link"><a href="wireframe_fo.html">🌐 Lihat Front Office →</a></div>
+
+
+<script>
+let cur='dashboard',notifVis=false;
+const titles={
+  'dashboard':['Dashboard','Ringkasan sistem hari ini — Semua Unit Usaha'],
+  'dok-list':['Manajemen Dokumen','Semua dokumen — Global & Per Unit Usaha'],
+  'dok-upload':['Upload Dokumen','Tambah dokumen baru'],
+  'dok-detail':['Detail Dokumen','Preview, download & riwayat versi'],
+  'trx-list':['Transaksi Keuangan','Semua transaksi — filter per Unit Usaha'],
+  'trx-input':['Input Transaksi','Catat transaksi baru — pilih Unit Usaha terlebih dahulu'],
+  'trx-approval':['Approval Transaksi','Setujui atau tolak transaksi yang menunggu'],
+  'lap-coa':['Chart of Accounts','Daftar akun dengan mapping Unit Usaha'],
+  'lap-cashflow':['Laporan Cashflow','Laporan arus kas — global & per Unit Usaha'],
+  'lap-labaru':['Laporan Laba Rugi','P&L per periode & per Unit Usaha'],
+  'lap-neraca':['Laporan Neraca','Posisi keuangan — global & per Unit Usaha'],
+  'lap-kategori':['Laporan Per Kategori','Breakdown per kategori & Unit Usaha'],
+  'lap-tahunan':['Laporan Tahunan','Rekap tahunan — global & per Unit Usaha'],
+  'lap-grafik':['Grafik Keuangan','Visualisasi data keuangan'],
+  'user-list':['Manajemen User','Daftar pengurus & assignment Unit Usaha'],
+  'profil-user':['Profil Saya','Edit profil & ganti password'],
+  'notif-center':['Notifikasi','Semua notifikasi sistem'],
+  'pengaturan':['Pengaturan Sistem','Konfigurasi koperasi, unit usaha & notifikasi'],
+  'log-aktivitas':['Log Aktivitas','Riwayat semua aktivitas user per Unit Usaha'],
+};
+
+function startApp(){
+  document.getElementById('page-login').style.display='none';
+  document.getElementById('app').classList.add('active');
+  go('dashboard');
+  setTimeout(()=>{renderCharts();},400);
+}
+function logout(){
+  document.getElementById('app').classList.remove('active');
+  document.getElementById('page-login').style.display='flex';
+}
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg=document.getElementById('pg-'+id);
+  if(pg){pg.classList.add('active');cur=id;}
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    n.classList.toggle('active',!!(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'")));
+  });
+  if(titles[id]){document.getElementById('pg-title').textContent=titles[id][0];document.getElementById('pg-sub').textContent=titles[id][1];}
+}
+function toggleNotif(){notifVis=!notifVis;document.getElementById('notif-panel').classList.toggle('show',notifVis);}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.notif-btn')&&!e.target.closest('.notif-panel')){document.getElementById('notif-panel').classList.remove('show');notifVis=false;}
+});
+
+function switchTab(tabsId,panelsId,idx){
+  document.querySelectorAll('#'+tabsId+' .tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  document.querySelectorAll('#'+panelsId+' .panel-item').forEach((p,i)=>p.style.display=i===idx?'block':'none');
+}
+
+function switchDokTab(idx){
+  document.querySelectorAll('#dok-detail-tabs .tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  ['dok-panel-0','dok-panel-1','dok-panel-2'].forEach((id,i)=>{
+    document.getElementById(id).style.display=i===idx?'block':'none';
+  });
+}
+
+let chartsRendered=false;
+function renderCharts(){
+  if(chartsRendered||!window.ApexCharts)return;
+  chartsRendered=true;
+  const o={chart:{toolbar:{show:false}},dataLabels:{enabled:false},stroke:{curve:'smooth'}};
+  // Dashboard
+  new ApexCharts(document.getElementById('chart-db'),{...o,chart:{...o.chart,type:'area',height:220},series:[{name:'Pemasukan',data:[18,22,19,25,21,24.5]},{name:'Pengeluaran',data:[12,15,14,18,16,18.2]}],xaxis:{categories:['Jan','Feb','Mar','Apr','Mei','Jun']},colors:['#375623','#C00000'],fill:{type:'gradient',gradient:{shadeIntensity:.1,opacityFrom:.4,opacityTo:.05}},legend:{position:'top'},tooltip:{y:{formatter:v=>'Rp '+v+' jt'}}}).render();
+  // Cashflow
+  new ApexCharts(document.getElementById('chart-cashflow'),{...o,chart:{...o.chart,type:'bar',height:230},series:[{name:'Masuk',data:[0,4.8,0,9.2,5,0]},{name:'Keluar',data:[9.8,0,8.5,0,0,3.2]}],xaxis:{categories:['7 Jun','8 Jun','8 Jun','9 Jun','10 Jun','10 Jun']},colors:['#375623','#C00000'],plotOptions:{bar:{columnWidth:'50%',borderRadius:4}},tooltip:{y:{formatter:v=>'Rp '+v+' jt'}}}).render();
+  // Tahunan
+  new ApexCharts(document.getElementById('chart-tahunan'),{...o,chart:{...o.chart,type:'bar',height:240},series:[{name:'Pemasukan',data:[19,18.7,19.8,20.5,22,24.5]},{name:'Pengeluaran',data:[7,8.4,12.2,14.8,15.4,18.2]}],xaxis:{categories:['Jan','Feb','Mar','Apr','Mei','Jun']},colors:['#375623','#C00000'],plotOptions:{bar:{columnWidth:'60%',borderRadius:3}},tooltip:{y:{formatter:v=>'Rp '+v+' jt'}}}).render();
+  // Grafik
+  new ApexCharts(document.getElementById('chart-trend'),{...o,chart:{...o.chart,type:'line',height:230},series:[{name:'Pemasukan',data:[19,18.7,19.8,20.5,22,24.5]},{name:'Pengeluaran',data:[7,8.4,12.2,14.8,15.4,18.2]}],xaxis:{categories:['Jan','Feb','Mar','Apr','Mei','Jun']},colors:['#375623','#C00000'],stroke:{curve:'smooth',width:2},markers:{size:4},tooltip:{y:{formatter:v=>'Rp '+v+' jt'}}}).render();
+  new ApexCharts(document.getElementById('chart-pie'),{chart:{type:'pie',height:230,toolbar:{show:false}},series:[48,25,18,9],labels:['Gaji','Operasional','Proyek','Investasi'],colors:['#1F4E79','#2E75B6','#C55A11','#375623'],legend:{position:'bottom'}}).render();
+  new ApexCharts(document.getElementById('chart-bar'),{...o,chart:{...o.chart,type:'bar',height:230},series:[{name:'Pemasukan',data:[12.5,7.2,4.8,0]},{name:'Pengeluaran',data:[0,5.4,9.8,3]}],xaxis:{categories:['Proyek','Operasional','Gaji','Investasi']},colors:['#375623','#C00000'],plotOptions:{bar:{horizontal:true,borderRadius:3}},tooltip:{y:{formatter:v=>'Rp '+v+' jt'}}}).render();
+  // Kategori
+  new ApexCharts(document.getElementById('chart-kat-masuk'),{chart:{type:'donut',height:185,toolbar:{show:false}},series:[12.5,7.2,4.8],labels:['Proyek','Operasional','Lainnya'],colors:['#375623','#2E75B6','#C55A11'],legend:{position:'bottom'},dataLabels:{enabled:true,formatter:v=>v.toFixed(0)+'%'}}).render();
+  new ApexCharts(document.getElementById('chart-kat-keluar'),{chart:{type:'donut',height:185,toolbar:{show:false}},series:[9.8,5.4,3],labels:['Gaji','Operasional','Investasi'],colors:['#C00000','#C55A11','#1F4E79'],legend:{position:'bottom'},dataLabels:{enabled:true,formatter:v=>v.toFixed(0)+'%'}}).render();
+}
+</script>
+
+</body>
+</html>
